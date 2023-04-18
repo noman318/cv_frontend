@@ -1,25 +1,39 @@
-import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
+import React, { useState, useEffect } from "react";
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  IconButton,
+  Typography,
+  Menu,
+  Container,
+  Avatar,
+  Tooltip,
+  MenuItem,
+  Button,
+} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
+import { doLogout, getUser, isLoggedInPortal } from "../services/MyService";
+import { useNavigate } from "react-router-dom";
 
 const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "myCVut"];
+const settings = ["Profile", "Dashboard", "Logout"];
 
 function Navbar() {
+  const getUserInfo = getUser();
+  console.log("getUserInfo", getUserInfo);
+  // console.log("isLoggedIn", isLoggedIn());
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const navigate = useNavigate();
+  const [userloggedIn, setUserLoggedIn] = useState(false);
 
+  useEffect(() => {
+    // Check if user is logged in and update the state accordingly
+    const isLoggedIn = isLoggedInPortal();
+    setUserLoggedIn(isLoggedIn);
+  }, []);
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -31,8 +45,12 @@ function Navbar() {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = (setting) => {
     setAnchorElUser(null);
+    if (setting === "Logout") {
+      doLogout();
+      navigate("/login");
+    }
   };
 
   return (
@@ -126,7 +144,16 @@ function Navbar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <div>
+                  {userloggedIn ? (
+                    <Avatar alt="User Avatar" src={`userAvatar`} />
+                  ) : (
+                    <Avatar
+                      alt="Default Avatar"
+                      src={"/static/images/avatar/2.jpg"}
+                    />
+                  )}
+                </div>
               </IconButton>
             </Tooltip>
             <Menu
@@ -146,7 +173,10 @@ function Navbar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem
+                  key={setting}
+                  onClick={() => handleCloseUserMenu(setting)}
+                >
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}

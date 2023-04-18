@@ -7,6 +7,7 @@ import LoginScreen from "./Screens/LoginScreen";
 import { ToastContainer } from "react-toastify";
 import { Container } from "@mui/material";
 import "react-toastify/dist/ReactToastify.css";
+import HomeScreen from "./Screens/HomeScreen";
 
 function App() {
   return (
@@ -27,7 +28,8 @@ function App() {
             theme="dark"
           />
           <Routes>
-            <Route path="/" element={<RegisterScreen />} />
+            <Route path="/" element={<HomeScreen />} />
+            <Route path="/register" element={<RegisterScreen />} />
             <Route path="/login" element={<LoginScreen />} />
           </Routes>
         </Container>

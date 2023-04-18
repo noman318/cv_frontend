@@ -17,7 +17,7 @@ const getUser = () => {
     return null;
   }
 };
-const isLoggedIn = () => {
+const isLoggedInPortal = () => {
   let data = localStorage.getItem("_token");
   if (!data) {
     return false;
@@ -27,7 +27,8 @@ const isLoggedIn = () => {
 };
 const doLogout = () => {
   localStorage.removeItem("_token");
-  window.location = "/login";
+  console.log("dddddddddddddddddddddddddd");
+  // window.location = "/login";
 };
 
-export { postRegister, postLogin, getUser, isLoggedIn, doLogout };
+export { postRegister, postLogin, getUser, isLoggedInPortal, doLogout };
