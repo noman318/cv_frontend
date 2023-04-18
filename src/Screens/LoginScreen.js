@@ -1,15 +1,19 @@
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  Grid,
+  Box,
+  Typography,
+  Container,
+} from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Link } from "react-router-dom";
+import { postLogin } from "../services/MyService";
+import { toast } from "react-toastify";
 
 function Copyright(props) {
   return (
@@ -35,9 +39,21 @@ export default function LoginScreen() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const formData = {
       email: data.get("email"),
       password: data.get("password"),
+    };
+    console.log("formData", formData);
+    postLogin(formData).then((res) => {
+      console.log("res.data", res.data);
+      if (res.data.err === 0) {
+        console.log("res.data", res.data);
+        localStorage.setItem("_token", res.data.token);
+        toast.success(res.data.msg);
+      }
+      if (res.data.err === 1) {
+        toast.error(res.data.msg);
+      }
     });
   };
 
