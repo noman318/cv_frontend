@@ -70,8 +70,8 @@ export default function RegisterScreen() {
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
+          marginTop={8}
           sx={{
-            marginTop: 8,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",

@@ -8,6 +8,7 @@ import { ToastContainer } from "react-toastify";
 import { Container } from "@mui/material";
 import "react-toastify/dist/ReactToastify.css";
 import HomeScreen from "./Screens/HomeScreen";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -17,14 +18,14 @@ function App() {
         <Container>
           <ToastContainer
             position="top-center"
-            autoClose={3000}
+            autoClose={2000}
             hideProgressBar={false}
             newestOnTop={false}
             closeOnClick
             rtl={false}
-            pauseOnFocusLoss
+            // pauseOnFocusLoss
             draggable
-            pauseOnHover
+            // pauseOnHover
             theme="dark"
           />
           <Routes>
@@ -33,6 +34,7 @@ function App() {
             <Route path="/login" element={<LoginScreen />} />
           </Routes>
         </Container>
+        <Footer />
       </Router>
     </div>
   );

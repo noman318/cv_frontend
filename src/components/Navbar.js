@@ -10,27 +10,25 @@ import {
   Avatar,
   Tooltip,
   MenuItem,
-  Button,
 } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import AdbIcon from "@mui/icons-material/Adb";
+
+import LockOpenIcon from "@mui/icons-material/LockOpen";
 import { doLogout, getUser, isLoggedInPortal } from "../services/MyService";
 import { useNavigate } from "react-router-dom";
 
-const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Dashboard", "Logout"];
+const settings = ["Profile", "Resume", "Logout"];
+const loginReg = ["Login", "Register"];
 
 function Navbar() {
   const getUserInfo = getUser();
   console.log("getUserInfo", getUserInfo);
-  // console.log("isLoggedIn", isLoggedIn());
+  console.log("isLoggedInPortal", isLoggedInPortal());
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const navigate = useNavigate();
   const [userloggedIn, setUserLoggedIn] = useState(false);
 
   useEffect(() => {
-    // Check if user is logged in and update the state accordingly
     const isLoggedIn = isLoggedInPortal();
     setUserLoggedIn(isLoggedIn);
   }, []);
@@ -41,8 +39,13 @@ function Navbar() {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
+  const handleCloseNavMenu = (auth) => {
     setAnchorElNav(null);
+    if (auth === "Login") {
+      navigate("/login");
+    } else if (auth === "Register") {
+      navigate("/register");
+    }
   };
 
   const handleCloseUserMenu = (setting) => {
@@ -56,7 +59,11 @@ function Navbar() {
   return (
     <AppBar position="static" color="secondary">
       <Container maxWidth="xl">
-        <Toolbar disableGutters>
+        <Toolbar
+          disableGutters
+          aria-label="navbar_tools"
+          sx={{ display: "flex", justifyContent: "space-between" }}
+        >
           <Typography
             variant="h6"
             noWrap
@@ -74,43 +81,6 @@ function Navbar() {
             myCV
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: "block", md: "none" },
-              }}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
@@ -129,32 +99,96 @@ function Navbar() {
           >
             myCV
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {page}
-              </Button>
-            ))}
-          </Box>
-
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <div>
-                  {userloggedIn ? (
-                    <Avatar alt="User Avatar" src={`userAvatar`} />
-                  ) : (
-                    <Avatar
-                      alt="Default Avatar"
-                      src={"/static/images/avatar/2.jpg"}
-                    />
-                  )}
-                </div>
-              </IconButton>
+            <Tooltip>
+              {getUserInfo ? (
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <>
+                    {userloggedIn ? (
+                      <Avatar alt="User Avatar" src={`none`} />
+                    ) : (
+                      <Avatar
+                        alt="Default Avatar"
+                        src={"/static/images/avatar/2.jpg"}
+                      />
+                    )}
+                  </>
+                </IconButton>
+              ) : (
+                <Box
+                  aria-label="auth_ButtonGroup"
+                  sx={{ display: { xs: "flex", md: "block" } }}
+                >
+                  {/* <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <>
+                      {userloggedIn ? (
+                        <Avatar alt="User Avatar" src={`userAvatar`} />
+                      ) : (
+                        <Avatar
+                          alt="Default Avatar"
+                          src={"/static/images/avatar/2.jpg"}
+                        />
+                      )}
+                    </>
+                  </IconButton> */}
+                  {/* {loginReg.map((authData) => (
+                    <ButtonGroup key={authData}>
+                      <Button
+                        variant="contained"
+                        textAlign="center"
+                        aria-label="reg_login button"
+                        sx={{
+                          marginRight: "10px",
+                          height: { xs: "35px", sm: "40px" },
+                        }}
+                      >
+                        {authData}
+                      </Button>
+                    </ButtonGroup>
+                  ))} */}
+                  <Box
+                    sx={{ flexGrow: 1, display: { xs: "flex", md: "flex" } }}
+                  >
+                    <IconButton
+                      size="large"
+                      aria-label="account of current user"
+                      aria-controls="menu-appbar"
+                      aria-haspopup="true"
+                      onClick={handleOpenNavMenu}
+                      color="inherit"
+                    >
+                      <LockOpenIcon />
+                    </IconButton>
+                    <Menu
+                      id="menu-appbar"
+                      anchorEl={anchorElNav}
+                      anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "left",
+                      }}
+                      keepMounted
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "left",
+                      }}
+                      open={Boolean(anchorElNav)}
+                      onClose={handleCloseNavMenu}
+                      sx={{
+                        display: { xs: "block", md: "block" },
+                      }}
+                    >
+                      {loginReg.map((auth) => (
+                        <MenuItem
+                          key={auth}
+                          onClick={() => handleCloseNavMenu(auth)}
+                        >
+                          <Typography textAlign="center">{auth}</Typography>
+                        </MenuItem>
+                      ))}
+                    </Menu>
+                  </Box>
+                </Box>
+              )}
             </Tooltip>
             <Menu
               sx={{ mt: "45px" }}

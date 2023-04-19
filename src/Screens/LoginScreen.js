@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { postLogin } from "../services/MyService";
 import { toast } from "react-toastify";
 
@@ -36,6 +36,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function LoginScreen() {
+  const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -50,6 +51,9 @@ export default function LoginScreen() {
         console.log("res.data", res.data);
         localStorage.setItem("_token", res.data.token);
         toast.success(res.data.msg);
+        setTimeout(() => {
+          navigate("/");
+        }, 3000);
       }
       if (res.data.err === 1) {
         toast.error(res.data.msg);
@@ -63,7 +67,7 @@ export default function LoginScreen() {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: "10px",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
