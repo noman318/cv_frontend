@@ -9,6 +9,7 @@ import { Container } from "@mui/material";
 import "react-toastify/dist/ReactToastify.css";
 import HomeScreen from "./Screens/HomeScreen";
 import Footer from "./components/Footer";
+import CreateResumeScreen from "./Screens/CreateResumeScreen";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
             <Route path="/" element={<HomeScreen />} />
             <Route path="/register" element={<RegisterScreen />} />
             <Route path="/login" element={<LoginScreen />} />
+            <Route path="/add-resume" element={<CreateResumeScreen />} />
           </Routes>
         </Container>
         <Footer />

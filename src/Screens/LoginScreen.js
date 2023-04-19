@@ -118,7 +118,7 @@ export default function LoginScreen() {
             </Button>
             <Grid container>
               <Grid item textAlign={"center"}>
-                <Link to="/">{"Don't have an account? Sign Up"}</Link>
+                <Link to="/register">{"Don't have an account? Sign Up"}</Link>
               </Grid>
             </Grid>
           </Box>
