@@ -73,7 +73,7 @@ export default function CreateResumeScreen() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const skills = skillRef.current.value;
-    console.log("skilss in Ref data", skills);
+    // console.log("skilss in Ref data", skills);
     const skillsArray = values.skills.split(",").map((skill) => skill.trim());
     console.log("skillsArray", skillsArray);
     const hobbies = hobbyRef.current.value;
