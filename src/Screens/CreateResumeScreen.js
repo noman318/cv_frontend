@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, memo, useRef } from "react";
 import {
   Button,
-  TextField,
+  TextField as MUITextField,
   Grid,
   Box,
   Typography,
@@ -10,6 +10,8 @@ import {
 } from "@mui/material";
 import { useFormik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
+
+const TextField = memo(MUITextField);
 
 const initialValuesResume = {
   firstName: "",
@@ -61,45 +63,23 @@ const INIT_EXP_FIELDS = {
 };
 
 export default function CreateResumeScreen() {
-  const [educationDetails, setEducationDetails] = useState(
-    initialValuesResume.education
-  );
-  const [experienceDetails, setExperienceDetails] = useState(
-    initialValuesResume.experience
-  );
-  const handleAddEducation = () => {
-    setEducationDetails((prevEducation) => [
-      ...prevEducation,
-      {
-        institution: "",
-        degree: "",
-        percentge: "",
-        fieldOfStudy: "",
-        startDate: "",
-        endDate: "",
-      },
-    ]);
-  };
-
-  const handleAddExperience = () => {
-    setExperienceDetails((prevExperience) => [
-      ...prevExperience,
-      { company: "", position: "", location: "", startDate: "", endDate: "" },
-    ]);
-  };
-
-  const { values, errors, touched, handleBlur, handleChange } = useFormik({
-    initialValues: initialValuesResume,
-    onSubmit: (values) => {
-      console.log("values", values);
-    },
-  });
-  // const [formValues, setFormValues] = useState(initialValues);
   const [experience, setExperience] = useState([INIT_EXP_FIELDS]);
   const [education, setEducation] = useState([INIT_EDU_FIELDS]);
+  const skillRef = useRef();
+  const hobbyRef = useRef();
+
+  // console.log("skillData", skills);
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    const skills = skillRef.current.value;
+    console.log("skilss in Ref data", skills);
+    const skillsArray = values.skills.split(",").map((skill) => skill.trim());
+    console.log("skillsArray", skillsArray);
+    const hobbies = hobbyRef.current.value;
+    console.log("skilss in Ref data", skills);
+    const hobbiesArray = values.hobbies.split(",").map((hobby) => hobby.trim());
+    console.log("hobbiesArray", hobbiesArray);
     const formDataNew = {
       firstName: data.get("firstName"),
       lastName: data.get("lastName"),
@@ -111,15 +91,42 @@ export default function CreateResumeScreen() {
       skills: data.get("skills"),
       hobbies: data.get("hobbies"),
       address: data.get("address"),
-      education: data.get("education"),
-      experience: data.get("experience"),
+      education: education,
+      experience: experience,
     };
     console.log("formDataNew", formDataNew);
   };
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   console.log(formValues);
-  // };
+
+  const handleInputChange = useCallback((index, event) => {
+    const { name, value } = event.target;
+    setEducation((pre) => {
+      const copyPre = JSON.parse(JSON.stringify(pre));
+      const currObj = JSON.parse(JSON.stringify(copyPre[index] || {}));
+      currObj[name] = value;
+      copyPre[index] = currObj;
+      return copyPre;
+    });
+  }, []);
+  console.log("education", education);
+
+  const handleInputChangeExp = useCallback((index, event) => {
+    const { name, value } = event.target;
+    setExperience((pre) => {
+      const copyPre = JSON.parse(JSON.stringify(pre));
+      const currObj = JSON.parse(JSON.stringify(copyPre[index] || {}));
+      currObj[name] = value;
+      copyPre[index] = currObj;
+      return copyPre;
+    });
+  }, []);
+  console.log("experience", experience);
+
+  const { values, errors, touched, handleBlur, handleChange } = useFormik({
+    initialValues: initialValuesResume,
+    onSubmit: (values) => {
+      console.log("values", values);
+    },
+  });
 
   const onAddEducation = () => {
     setEducation((pre) => [...pre, INIT_EDU_FIELDS]);
@@ -324,6 +331,7 @@ export default function CreateResumeScreen() {
             <TextField
               required
               fullWidth
+              inputRef={skillRef}
               name="skills"
               label="Skills"
               type="skills"
@@ -348,6 +356,7 @@ export default function CreateResumeScreen() {
             <TextField
               required
               fullWidth
+              inputRef={hobbyRef}
               name="hobbies"
               label="Hobbies"
               type="hobbies"
@@ -446,8 +455,8 @@ export default function CreateResumeScreen() {
                     id="institution"
                     color="secondary"
                     autoComplete="institution"
-                    value={values.institution}
-                    onChange={onchange}
+                    // value={data.institution}
+                    onChange={(event) => handleInputChange(index, event)}
                   />
                   {errors.institution && touched.institution ? (
                     <Typography variant="caption" sx={{ color: "red" }}>
@@ -467,15 +476,18 @@ export default function CreateResumeScreen() {
                     id="degree"
                     color="secondary"
                     autoComplete="degree"
-                    value={values.degree}
+                    // value={data.degree}
+                    onChange={(event) => handleInputChange(index, event)}
+                    error={errors.degree && touched.degree}
+                    helperTex={touched.degree && errors.degree}
                   />
-                  {errors.degree && touched.degree ? (
+                  {/* {errors.degree && touched.degree ? (
                     <Typography variant="caption" sx={{ color: "red" }}>
                       {errors.degree}
                     </Typography>
                   ) : (
                     ""
-                  )}
+                  )} */}
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -487,7 +499,8 @@ export default function CreateResumeScreen() {
                     id="percentge"
                     color="secondary"
                     autoComplete="percentge"
-                    value={values.percentge}
+                    // value={data.percentge}
+                    onChange={(event) => handleInputChange(index, event)}
                   />
                   {errors.percentge && touched.percentge ? (
                     <Typography variant="caption" sx={{ color: "red" }}>
@@ -507,7 +520,8 @@ export default function CreateResumeScreen() {
                     id="fieldOfStudy"
                     color="secondary"
                     autoComplete="fieldOfStudy"
-                    value={values.fieldOfStudy}
+                    // value={data.fieldOfStudy}
+                    onChange={(event) => handleInputChange(index, event)}
                   />
                   {errors.fieldOfStudy && touched.fieldOfStudy ? (
                     <Typography variant="caption" sx={{ color: "red" }}>
@@ -527,7 +541,8 @@ export default function CreateResumeScreen() {
                     id="startDate"
                     color="secondary"
                     autoComplete="startDate"
-                    value={values.startDate}
+                    // value={data.startDate}
+                    onChange={(event) => handleInputChange(index, event)}
                   />
                   {errors.startDate && touched.startDate ? (
                     <Typography variant="caption" sx={{ color: "red" }}>
@@ -547,7 +562,8 @@ export default function CreateResumeScreen() {
                     id="endDate"
                     color="secondary"
                     autoComplete="endDate"
-                    value={values.endDate}
+                    // value={data.endDate}
+                    onChange={(event) => handleInputChange(index, event)}
                   />
                   {errors.endDate && touched.endDate ? (
                     <Typography variant="caption" sx={{ color: "red" }}>
@@ -556,13 +572,6 @@ export default function CreateResumeScreen() {
                   ) : (
                     ""
                   )}
-                  <Button
-                    variant="contained"
-                    onClick={handleAddEducation}
-                    sx={{ marginTop: "10px" }}
-                  >
-                    ADD
-                  </Button>
                 </Grid>
               </>
             );
@@ -606,6 +615,7 @@ export default function CreateResumeScreen() {
                     id="company"
                     color="secondary"
                     autoComplete="company"
+                    onChange={(event) => handleInputChangeExp(index, event)}
                   />
                   {errors.company && touched.company ? (
                     <Typography variant="caption" sx={{ color: "red" }}>
@@ -625,6 +635,7 @@ export default function CreateResumeScreen() {
                     id="location"
                     color="secondary"
                     autoComplete="location"
+                    onChange={(event) => handleInputChangeExp(index, event)}
                   />
                   {errors.location && touched.location ? (
                     <Typography variant="caption" sx={{ color: "red" }}>
@@ -644,6 +655,7 @@ export default function CreateResumeScreen() {
                     id="position"
                     color="secondary"
                     autoComplete="position"
+                    onChange={(event) => handleInputChangeExp(index, event)}
                   />
                   {errors.position && touched.position ? (
                     <Typography variant="caption" sx={{ color: "red" }}>
@@ -663,6 +675,7 @@ export default function CreateResumeScreen() {
                     id="startDate"
                     color="secondary"
                     autoComplete="startDate"
+                    onChange={(event) => handleInputChangeExp(index, event)}
                   />
                   {errors.startDate && touched.startDate ? (
                     <Typography variant="caption" sx={{ color: "red" }}>
@@ -682,6 +695,7 @@ export default function CreateResumeScreen() {
                     id="endDate"
                     color="secondary"
                     autoComplete="endDate"
+                    onChange={(event) => handleInputChangeExp(index, event)}
                   />
                   {errors.endDate && touched.endDate ? (
                     <Typography variant="caption" sx={{ color: "red" }}>
@@ -690,13 +704,13 @@ export default function CreateResumeScreen() {
                   ) : (
                     ""
                   )}
-                  <Button
+                  {/* <Button
                     variant="contained"
-                    onClick={handleAddExperience}
+                    // onClick={handleAddExperience}
                     sx={{ marginTop: "10px" }}
                   >
                     ADD
-                  </Button>
+                  </Button> */}
                 </Grid>
               </>
             );
