@@ -1,6 +1,11 @@
 import React from "react";
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import RegisterScreen from "./Screens/RegisterScreen";
 import Navbar from "./components/Navbar";
 import LoginScreen from "./Screens/LoginScreen";
@@ -10,8 +15,13 @@ import "react-toastify/dist/ReactToastify.css";
 import HomeScreen from "./Screens/HomeScreen";
 import Footer from "./components/Footer";
 import CreateResumeScreen from "./Screens/CreateResumeScreen";
+import { isLoggedInPortal } from "./services/MyService";
 
 function App() {
+  const ProtectRoute = ({ children }) => {
+    const auth = isLoggedInPortal();
+    return auth ? children : <Navigate to="/register" />;
+  };
   return (
     <div className="App">
       <Router>
@@ -24,16 +34,28 @@ function App() {
             newestOnTop={false}
             closeOnClick
             rtl={false}
-            // pauseOnFocusLoss
             draggable
-            // pauseOnHover
             theme="dark"
           />
           <Routes>
-            <Route path="/" element={<HomeScreen />} />
+            <Route
+              path="/"
+              element={
+                <ProtectRoute>
+                  <HomeScreen />
+                </ProtectRoute>
+              }
+            />
+            <Route
+              path="/add-resume"
+              element={
+                <ProtectRoute>
+                  <CreateResumeScreen />
+                </ProtectRoute>
+              }
+            />
             <Route path="/register" element={<RegisterScreen />} />
             <Route path="/login" element={<LoginScreen />} />
-            <Route path="/add-resume" element={<CreateResumeScreen />} />
           </Routes>
         </Container>
         <Footer />

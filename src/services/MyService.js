@@ -10,6 +10,33 @@ const postLogin = (data) => {
   return axios.post(`${apiUrl}login`, data);
 };
 
+const getAllResume = (id, token) => {
+  return axios.get(`${apiUrl}resume/getall-resume/${id}`, {
+    headers: {
+      token: `${token}`,
+    },
+  });
+};
+
+const getResumeById = (id, token) => {
+  return axios.get(`${apiUrl}resume/getall-resume/${id}`, {
+    headers: {
+      token: `${token}`,
+    },
+  });
+};
+
+const createNewResume = (token, data) => {
+  return axios.post(
+    `${apiUrl}resume/create-resume`,
+    {
+      headers: {
+        token: `${token}`,
+      },
+    },
+    data
+  );
+};
 const getUser = () => {
   try {
     return jwt_decode(localStorage.getItem("_token"));
@@ -27,8 +54,16 @@ const isLoggedInPortal = () => {
 };
 const doLogout = () => {
   localStorage.removeItem("_token");
-  console.log("dddddddddddddddddddddddddd");
   // window.location = "/login";
 };
 
-export { postRegister, postLogin, getUser, isLoggedInPortal, doLogout };
+export {
+  postRegister,
+  postLogin,
+  getUser,
+  isLoggedInPortal,
+  doLogout,
+  getAllResume,
+  getResumeById,
+  createNewResume,
+};

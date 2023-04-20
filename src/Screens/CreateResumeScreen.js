@@ -10,6 +10,8 @@ import {
 } from "@mui/material";
 import { useFormik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
+import { createNewResume } from "../services/MyService";
+import { toast } from "react-toastify";
 
 const TextField = memo(MUITextField);
 
@@ -65,8 +67,10 @@ const INIT_EXP_FIELDS = {
 export default function CreateResumeScreen() {
   const [experience, setExperience] = useState([INIT_EXP_FIELDS]);
   const [education, setEducation] = useState([INIT_EDU_FIELDS]);
+  const [state, setState] = useState({ errMsg: "", succMsg: "" });
   const skillRef = useRef();
   const hobbyRef = useRef();
+  const navigate = useNavigate();
 
   // console.log("skillData", skills);
   const handleSubmit = (event) => {
@@ -95,6 +99,24 @@ export default function CreateResumeScreen() {
       experience: experience,
     };
     console.log("formDataNew", formDataNew);
+    createNewResume(formDataNew)
+      .then((res) => {
+        console.log(res);
+        // eslint-disable-next-line eqeqeq
+        if (res.data.err == 0) {
+          setState({ ...state, succMsg: res.data.msg });
+          toast.success("Registered Successfully");
+          navigate("/");
+        }
+        // eslint-disable-next-line eqeqeq
+        if (res.data.err == 1) {
+          setState({ ...state, errMsg: res.data.msg });
+          toast.error(res.data.msg);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleInputChange = useCallback((index, event) => {
