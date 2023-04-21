@@ -21,7 +21,7 @@ const loginReg = ["Login", "Register"];
 
 function Navbar() {
   const getUserInfo = getUser();
-  console.log("getUserInfo", getUserInfo);
+  // console.log("getUserInfo", getUserInfo)
   console.log("isLoggedInPortal", isLoggedInPortal());
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);

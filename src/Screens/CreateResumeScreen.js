@@ -12,6 +12,7 @@ import { useFormik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import { createNewResume } from "../services/MyService";
 import { toast } from "react-toastify";
+import { getUser } from "../services/MyService";
 
 const TextField = memo(MUITextField);
 
@@ -50,7 +51,7 @@ const initialValuesResume = {
 const INIT_EDU_FIELDS = {
   institution: "",
   degree: "",
-  percentge: "",
+  percentage: "",
   fieldOfStudy: "",
   startDate: "",
   endDate: "",
@@ -68,21 +69,44 @@ export default function CreateResumeScreen() {
   const [experience, setExperience] = useState([INIT_EXP_FIELDS]);
   const [education, setEducation] = useState([INIT_EDU_FIELDS]);
   const [state, setState] = useState({ errMsg: "", succMsg: "" });
+  const userInfo = getUser();
+
+  const fname = userInfo?.firstName;
+  const lname = userInfo?.lastName;
+  const userPhone = userInfo?.phone;
+  const userEmail = userInfo?.email;
+  const [userValues, setUserValues] = useState({
+    firstName: fname || "",
+    lastName: lname || "",
+    email: userEmail || "",
+    phone: userPhone || "",
+  });
   const skillRef = useRef();
   const hobbyRef = useRef();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
+
+  const token = localStorage.getItem("_token");
+  // console.log("token", token);
 
   // console.log("skillData", skills);
+  // console.log("userInfo", userInfo);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const skills = skillRef.current.value;
-    // console.log("skilss in Ref data", skills);
-    const skillsArray = values.skills.split(",").map((skill) => skill.trim());
+    const skillsArray =
+      typeof values.skills === "string"
+        ? values.skills?.split(",")?.map((skill) => skill.trim())
+        : [];
     console.log("skillsArray", skillsArray);
+    // console.log("skilss in Ref data", skills);
     const hobbies = hobbyRef.current.value;
-    console.log("skilss in Ref data", skills);
-    const hobbiesArray = values.hobbies.split(",").map((hobby) => hobby.trim());
+    console.log("hobbies", hobbies);
+    const hobbiesArray =
+      typeof values.hobbies === "string"
+        ? values.hobbies?.split(",")?.map((hobby) => hobby.trim())
+        : [];
     console.log("hobbiesArray", hobbiesArray);
     const formDataNew = {
       firstName: data.get("firstName"),
@@ -92,23 +116,20 @@ export default function CreateResumeScreen() {
       github: data.get("github"),
       linkedIn: data.get("linkedIn"),
       skype: data.get("skype"),
-      skills: data.get("skills"),
-      hobbies: data.get("hobbies"),
+      skills: skillsArray,
+      hobbies: hobbiesArray,
       address: data.get("address"),
       education: education,
       experience: experience,
     };
     console.log("formDataNew", formDataNew);
-    createNewResume(formDataNew)
+    createNewResume(token, formDataNew)
       .then((res) => {
         console.log(res);
-        // eslint-disable-next-line eqeqeq
         if (res.data.err == 0) {
           setState({ ...state, succMsg: res.data.msg });
-          toast.success("Registered Successfully");
-          navigate("/");
+          toast.success("Created Successfully");
         }
-        // eslint-disable-next-line eqeqeq
         if (res.data.err == 1) {
           setState({ ...state, errMsg: res.data.msg });
           toast.error(res.data.msg);
@@ -129,7 +150,7 @@ export default function CreateResumeScreen() {
       return copyPre;
     });
   }, []);
-  console.log("education", education);
+  // console.log("education", education);
 
   const handleInputChangeExp = useCallback((index, event) => {
     const { name, value } = event.target;
@@ -141,7 +162,7 @@ export default function CreateResumeScreen() {
       return copyPre;
     });
   }, []);
-  console.log("experience", experience);
+  // console.log("experience", experience);
 
   const { values, errors, touched, handleBlur, handleChange } = useFormik({
     initialValues: initialValuesResume,
@@ -186,8 +207,10 @@ export default function CreateResumeScreen() {
               color="secondary"
               id="firstName"
               label="First Name"
-              value={values.firstName}
-              onChange={handleChange}
+              value={userValues.firstName}
+              onChange={(e) =>
+                setUserValues({ ...userValues, firstName: e.target.value })
+              }
               onBlur={handleBlur}
               autoFocus
             />
@@ -208,8 +231,10 @@ export default function CreateResumeScreen() {
               color="secondary"
               name="lastName"
               autoComplete="family-name"
-              value={values.lastName}
-              onChange={handleChange}
+              value={userValues.lastName}
+              onChange={(e) =>
+                setUserValues({ ...userValues, lastName: e.target.value })
+              }
               onBlur={handleBlur}
             />
             {errors.lastName && touched.lastName ? (
@@ -230,8 +255,10 @@ export default function CreateResumeScreen() {
               type="email"
               color="secondary"
               autoComplete="email"
-              value={values.email}
-              onChange={handleChange}
+              value={userValues.email}
+              onChange={(e) =>
+                setUserValues({ ...userValues, email: e.target.value })
+              }
               onBlur={handleBlur}
             />
             {errors.email && touched.email ? (
@@ -251,8 +278,10 @@ export default function CreateResumeScreen() {
               name="phone"
               color="secondary"
               autoComplete="phone"
-              value={values.phone}
-              onChange={handleChange}
+              value={userValues.phone}
+              onChange={(e) =>
+                setUserValues({ ...userValues, phone: e.target.value })
+              }
               onBlur={handleBlur}
             />
             {errors.phone && touched.phone ? (
@@ -356,7 +385,7 @@ export default function CreateResumeScreen() {
               inputRef={skillRef}
               name="skills"
               label="Skills"
-              type="skills"
+              type="text"
               id="skills"
               color="secondary"
               autoComplete="skills"
@@ -381,7 +410,7 @@ export default function CreateResumeScreen() {
               inputRef={hobbyRef}
               name="hobbies"
               label="Hobbies"
-              type="hobbies"
+              type="text"
               id="hobbies"
               color="secondary"
               autoComplete="hobbies"
@@ -516,17 +545,17 @@ export default function CreateResumeScreen() {
                     required
                     fullWidth
                     name={`percentage`}
-                    label="percentge"
-                    type="percentge"
-                    id="percentge"
+                    label="percentage"
+                    type="percentage"
+                    id="percentage"
                     color="secondary"
-                    autoComplete="percentge"
-                    // value={data.percentge}
+                    autoComplete="percentage"
+                    // value={data.percentage}
                     onChange={(event) => handleInputChange(index, event)}
                   />
-                  {errors.percentge && touched.percentge ? (
+                  {errors.percentage && touched.percentage ? (
                     <Typography variant="caption" sx={{ color: "red" }}>
-                      {errors.percentge}
+                      {errors.percentage}
                     </Typography>
                   ) : (
                     ""
@@ -537,7 +566,7 @@ export default function CreateResumeScreen() {
                     required
                     fullWidth
                     name="fieldOfStudy"
-                    label="fieldOfStudy"
+                    label="Field Of Study"
                     type="fieldOfStudy"
                     id="fieldOfStudy"
                     color="secondary"

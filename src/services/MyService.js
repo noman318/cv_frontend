@@ -27,15 +27,11 @@ const getResumeById = (id, token) => {
 };
 
 const createNewResume = (token, data) => {
-  return axios.post(
-    `${apiUrl}resume/create-resume`,
-    {
-      headers: {
-        token: `${token}`,
-      },
+  return axios.post(`${apiUrl}resume/create-resume`, data, {
+    headers: {
+      token: `${token}`,
     },
-    data
-  );
+  });
 };
 const getUser = () => {
   try {
