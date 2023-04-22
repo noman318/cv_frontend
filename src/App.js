@@ -16,6 +16,8 @@ import HomeScreen from "./Screens/HomeScreen";
 import Footer from "./components/Footer";
 import CreateResumeScreen from "./Screens/CreateResumeScreen";
 import { isLoggedInPortal } from "./services/MyService";
+import ViewResume from "./Screens/ViewResume";
+import { Document, Page, Text } from "@react-pdf/renderer";
 
 function App() {
   const ProtectRoute = ({ children }) => {
@@ -54,6 +56,7 @@ function App() {
                 </ProtectRoute>
               }
             />
+            <Route path="/view/:id" element={<ViewResume />} />
             <Route path="/register" element={<RegisterScreen />} />
             <Route path="/login" element={<LoginScreen />} />
           </Routes>

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 // eslint-disable-next-line
 import {
-  Button,
   Card,
   Typography,
   CardActionArea,
@@ -15,24 +14,22 @@ import {
 import { Edit, Visibility, FileDownload } from "@mui/icons-material";
 import { useNavigate, Link } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
-import { getAllResume, getUser, isLoggedInPortal } from "../services/MyService";
+import { getAllResume, getUser } from "../services/MyService";
 export default function CardData() {
   const getUserInfo = getUser();
   // console.log("getUserInfo", getUserInfo);
   const { _id } = getUserInfo;
   const token = localStorage.getItem("_token");
-  console.log("_id", _id);
+  // console.log("_id", _id);
   const [allResume, setAllResume] = useState([]);
   console.log("allResume", allResume);
   useEffect(() => {
     getAllResume(_id, token).then((res) => {
       console.log("res", res);
       const { resumes } = res.data;
-      // console.log("resumes", resumes);
       setAllResume(resumes);
     });
-    console.log("allResume", allResume);
-  }, [_id, allResume, token]);
+  }, [_id, token]);
   const navigate = useNavigate();
   const handleNewResume = () => {
     navigate("/add-resume");

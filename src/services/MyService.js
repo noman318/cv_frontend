@@ -19,7 +19,7 @@ const getAllResume = (id, token) => {
 };
 
 const getResumeById = (id, token) => {
-  return axios.get(`${apiUrl}resume/getall-resume/${id}`, {
+  return axios.get(`${apiUrl}resume/get-resume/${id}`, {
     headers: {
       token: `${token}`,
     },

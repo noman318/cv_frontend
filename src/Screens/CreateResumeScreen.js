@@ -9,6 +9,7 @@ import {
   Divider,
 } from "@mui/material";
 import { useFormik } from "formik";
+// eslint-disable-next-line
 import { Link, useNavigate } from "react-router-dom";
 import { createNewResume } from "../services/MyService";
 import { toast } from "react-toastify";
@@ -94,6 +95,7 @@ export default function CreateResumeScreen() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    // eslint-disable-next-line
     const skills = skillRef.current.value;
     const skillsArray =
       typeof values.skills === "string"
@@ -101,8 +103,9 @@ export default function CreateResumeScreen() {
         : [];
     console.log("skillsArray", skillsArray);
     // console.log("skilss in Ref data", skills);
+    // eslint-disable-next-line
     const hobbies = hobbyRef.current.value;
-    console.log("hobbies", hobbies);
+    // console.log("hobbies", hobbies);
     const hobbiesArray =
       typeof values.hobbies === "string"
         ? values.hobbies?.split(",")?.map((hobby) => hobby.trim())
@@ -126,10 +129,12 @@ export default function CreateResumeScreen() {
     createNewResume(token, formDataNew)
       .then((res) => {
         console.log(res);
+        // eslint-disable-next-line
         if (res.data.err == 0) {
           setState({ ...state, succMsg: res.data.msg });
           toast.success("Created Successfully");
         }
+        // eslint-disable-next-line
         if (res.data.err == 1) {
           setState({ ...state, errMsg: res.data.msg });
           toast.error(res.data.msg);
@@ -755,13 +760,6 @@ export default function CreateResumeScreen() {
                   ) : (
                     ""
                   )}
-                  {/* <Button
-                    variant="contained"
-                    // onClick={handleAddExperience}
-                    sx={{ marginTop: "10px" }}
-                  >
-                    ADD
-                  </Button> */}
                 </Grid>
               </>
             );
