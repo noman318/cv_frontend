@@ -21,6 +21,7 @@ import {
   GitHub,
   LinkedIn,
   FiberManualRecord,
+  FileDownload,
 } from "@mui/icons-material";
 import Educationdetails from "../components/Educationdetails";
 import ExperienceDetails from "../components/ExperienceDetails";
@@ -84,62 +85,16 @@ const ViewResume = () => {
   return (
     <Container>
       <Grid
-        sx={{
-          border: "0.5px solid gray",
-          marginTop: "20px",
-          borderRadius: "5px",
-          height: {
-            xs: "282vh",
-            sm: "266vh",
-            md: "133vh",
-            xl: "113vh",
-          },
-        }}
+        sx={styles.mainGrid}
         aria-label="top_Level_grid"
         className="full_resume"
       >
-        <Grid item sx={{ padding: "15px", margin: "3% 0" }}>
-          <Grid
-            item
-            width={"100%"}
-            aria-label="main_paper"
-            sx={{ fontFamily: "serif" }}
-          >
+        <Grid item sx={styles.itemOne}>
+          <Grid item width={"100%"} aria-label="main_paper" sx={styles.fontOne}>
             <Grid item height={"10%"} width={"100%"} backgroundColor="#7b2cbf">
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-                padding={4}
-                aria-label="heading_name"
-              >
-                <Box
-                  sx={{
-                    height: "50px",
-                    width: "50px",
-                    borderBottom: "3px solid white",
-                    borderTop: "3px solid white",
-                    borderRight: "0.2px solid white",
-                    borderLeft: "0.2px solid white",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    marginBottom: "5px",
-                  }}
-                  aria-label="initial_name"
-                >
-                  <Typography
-                    sx={{
-                      fontWeight: "bolder",
-                      color: "white",
-                      fontSize: "1.5rem",
-                      fontFamily: "serif",
-                      fontStyle: "italic",
-                    }}
-                  >
+              <Box sx={styles.boxOne} padding={4} aria-label="heading_name">
+                <Box sx={styles.logoBox} aria-label="initial_name">
+                  <Typography sx={styles.logoName}>
                     {`${firstNameInitials} ${lastNameInitails}`}
                   </Typography>
                 </Box>
@@ -147,7 +102,7 @@ const ViewResume = () => {
                   variant="h4"
                   textAlign={"center"}
                   color={"white"}
-                  sx={{ fontSize: "2rem", fontFamily: "serif" }}
+                  sx={styles.headFont}
                 >
                   {resumeData?.name}
                 </Typography>
@@ -157,79 +112,43 @@ const ViewResume = () => {
               item
               display={"flex"}
               aria-label="division_flex"
-              sx={{
-                flexDirection: {
-                  xs: "column-reverse",
-                  sm: "column-reverse",
-                  md: "row",
-                  xl: "row",
-                },
-              }}
+              sx={styles.resumeDataMain}
             >
               <Grid
                 item
                 flex={"0.6"}
                 height={"100dvh"}
-                sx={{ padding: "10px", marginBottom: "3%" }}
+                sx={styles.resumeDataRight}
               >
                 <Grid item>
-                  <Typography
-                    variant="h5"
-                    sx={{
-                      color: "#383b3e",
-                      fontSize: "1.8rem",
-                      fontFamily: "serif",
-                      fontStyle: "italic",
-                    }}
-                  >
+                  <Typography variant="h5" sx={styles.fontHead}>
                     Professional Summary
                   </Typography>
-                  <Typography
-                    sx={{
-                      color: "black",
-                      fontSize: "1.1rem",
-                      fontFamily: "serif",
-                      fontStyle: "italic",
-                    }}
-                  >
+                  <Typography sx={styles.fontHeadTwo}>
                     Motivated and result-oriented project manager with five
                     years of experience in planning, monitoring and controlling
                     projects to closure.
                   </Typography>
                 </Grid>
-                <Divider sx={{ width: "90%", margin: "2% 0 2% 2%" }} />
+                <Divider sx={styles.dividerStyle} />
 
                 <Grid item>
-                  <Typography
-                    sx={{
-                      color: "black",
-                      fontSize: "1.3rem",
-                      fontFamily: "serif",
-                      fontStyle: "italic",
-                    }}
-                  >
+                  <Typography sx={styles.componetStyles}>
                     Work History
                   </Typography>
                   {experienceDetails?.map((experience, index) => (
                     <React.Fragment key={index}>
                       <ExperienceDetails data={experience} />
                       {index !== experienceDetails.length - 1 && (
-                        <Divider sx={{ width: "90%", margin: "3% 0 3% 3%" }} />
+                        <Divider sx={styles.dividerStyle} />
                       )}
                     </React.Fragment>
                   ))}
                 </Grid>
-                <Divider sx={{ width: "90%", margin: "3% 0 3% 3%" }} />
+                <Divider sx={styles.dividerStyle} />
 
                 <Grid item>
-                  <Typography
-                    sx={{
-                      color: "black",
-                      fontSize: "1.3rem",
-                      fontFamily: "serif",
-                      fontStyle: "italic",
-                    }}
-                  >
+                  <Typography sx={styles.componetStyles}>
                     Education Details
                   </Typography>
 
@@ -237,7 +156,7 @@ const ViewResume = () => {
                     <React.Fragment key={index}>
                       <Educationdetails data={education} />
                       {index !== experienceDetails.length - 1 && (
-                        <Divider sx={{ width: "90%", margin: "3% 0 3% 3%" }} />
+                        <Divider sx={styles.dividerStyle} />
                       )}
                     </React.Fragment>
                   ))}
@@ -247,137 +166,86 @@ const ViewResume = () => {
                 item
                 flex={"0.4"}
                 height={"100dvh"}
-                sx={{ backgroundColor: "#ddd0df" }}
+                sx={styles.fortyPercentStyles}
               >
-                <List sx={{ padding: "2px 0" }}>
-                  <Typography
-                    sx={{
-                      marginTop: "10px",
-                      fontFamily: "serif",
-                      marginLeft: "14px",
-                      fontWeight: "bolder",
-                    }}
-                  >
-                    Socail Links
-                  </Typography>
-                  <ListItem sx={{ padding: "4px 8px 4px 16px" }}>
-                    <ListItemIcon sx={{ minWidth: "35px" }}>
+                <List sx={styles.listStyles}>
+                  <Typography sx={styles.socialStyles}>Socail Links</Typography>
+                  <ListItem sx={styles.listItemStyles}>
+                    <ListItemIcon sx={styles.listIconStyles}>
                       <Email />
                     </ListItemIcon>
                     <ListItemText
                       primary={
-                        <Typography
-                          sx={{ fontFamily: "serif", fontSize: "18px" }}
-                        >
+                        <Typography sx={styles.typoFontStyles}>
                           {resumeData?.email}
                         </Typography>
                       }
                     />
                   </ListItem>
-                  <ListItem sx={{ padding: "4px 8px 4px 16px" }}>
-                    <ListItemIcon sx={{ minWidth: "35px" }}>
+                  <ListItem sx={styles.listItemStyles}>
+                    <ListItemIcon sx={styles.listIconStyles}>
                       <Phone />
                     </ListItemIcon>
                     <ListItemText
                       primary={
-                        <Typography
-                          sx={{ fontFamily: "serif", fontSize: "18px" }}
-                        >
+                        <Typography sx={styles.typoFontStyles}>
                           {resumeData?.phone}
                         </Typography>
                       }
                     />
                   </ListItem>
-                  <ListItem sx={{ padding: "4px 8px 4px 16px" }}>
-                    <ListItemIcon sx={{ minWidth: "35px" }}>
+                  <ListItem sx={styles.listItemStyles}>
+                    <ListItemIcon sx={styles.listIconStyles}>
                       <GitHub />
                     </ListItemIcon>
                     <ListItemText
                       primary={
-                        <Typography
-                          sx={{ fontFamily: "serif", fontSize: "18px" }}
-                        >
+                        <Typography sx={styles.typoFontStyles}>
                           {resumeData?.github}
                         </Typography>
                       }
                     />
                   </ListItem>
-                  <ListItem sx={{ padding: "4px 8px 4px 16px" }}>
-                    <ListItemIcon sx={{ minWidth: "35px" }}>
+                  <ListItem sx={styles.listItemStyles}>
+                    <ListItemIcon sx={styles.listIconStyles}>
                       <LinkedIn />
                     </ListItemIcon>
                     <ListItemText
                       primary={
-                        <Typography
-                          sx={{ fontFamily: "serif", fontSize: "18px" }}
-                        >
+                        <Typography sx={styles.typoFontStyles}>
                           {resumeData?.linkedIn}
                         </Typography>
                       }
                     />
                   </ListItem>
                 </List>
-                <Divider sx={{ width: "90%", margin: "3% 0 3% 3%" }} />
-                <List sx={{ padding: "2px 0" }}>
-                  <Typography
-                    sx={{
-                      fontFamily: "serif",
-                      marginLeft: "14px",
-                      fontWeight: "bolder",
-                    }}
-                  >
-                    Skills
-                  </Typography>
+                <Divider sx={styles.dividerStyle} />
+                <List sx={styles.listStyles}>
+                  <Typography sx={styles.typoListStyles}>Skills</Typography>
                   {skills?.map((data, index) => (
-                    <ListItem key={index} sx={{ padding: "4px 8px 4px 16px" }}>
-                      <ListItemIcon sx={{ minWidth: "15px" }}>
-                        <FiberManualRecord sx={{ fontSize: "13px" }} />
+                    <ListItem key={index} sx={styles.listItemStyles}>
+                      <ListItemIcon sx={styles.listIconStyles}>
+                        <FiberManualRecord sx={styles.radioIcon} />
                       </ListItemIcon>
                       <ListItemText
                         primary={
-                          <Typography
-                            sx={{
-                              fontFamily: "serif",
-                              textTransform: "capitalize",
-                              marginLeft: "8px",
-                              fontSize: "18px",
-                            }}
-                          >
-                            {data}
-                          </Typography>
+                          <Typography sx={styles.dataFont}>{data}</Typography>
                         }
                       />
                     </ListItem>
                   ))}
                 </List>
-                <Divider sx={{ width: "90%", margin: "3% 0 3% 3%" }} />
-                <List sx={{ padding: "2px 0" }}>
-                  <Typography
-                    sx={{
-                      fontFamily: "serif",
-                      marginLeft: "14px",
-                      fontWeight: "bolder",
-                    }}
-                  >
-                    Hobbies
-                  </Typography>
+                <Divider sx={styles.dividerStyle} />
+                <List sx={styles.listStyles}>
+                  <Typography sx={styles.typoListStyles}>Hobbies</Typography>
                   {hobbies?.map((data, index) => (
-                    <ListItem key={index} sx={{ padding: "4px 8px 4px 16px" }}>
-                      <ListItemIcon sx={{ minWidth: "15px" }}>
-                        <FiberManualRecord sx={{ fontSize: "13px" }} />
+                    <ListItem key={index} sx={styles.listItemStyles}>
+                      <ListItemIcon sx={styles.listIconStyles}>
+                        <FiberManualRecord sx={styles.radioIcon} />
                       </ListItemIcon>
                       <ListItemText
                         primary={
-                          <Typography
-                            sx={{
-                              fontFamily: "serif",
-                              textTransform: "capitalize",
-                              marginLeft: "8px",
-                              fontSize: "18px",
-                            }}
-                          >
-                            {data}
-                          </Typography>
+                          <Typography sx={styles.dataFont}>{data}</Typography>
                         }
                       />
                     </ListItem>
@@ -388,15 +256,113 @@ const ViewResume = () => {
           </Grid>
         </Grid>
       </Grid>
-      <Button
-        className="receipt-modal-download-button"
-        onClick={downloadPDF}
-        disabled={!(loader === false)}
-      >
-        {loader ? <span>Downloading</span> : <span>Download</span>}
-      </Button>
+      <Grid sx={styles.buttonGrid}>
+        <Button
+          variant="contained"
+          color="success"
+          onClick={downloadPDF}
+          disabled={!(loader === false)}
+          startIcon={<FileDownload />}
+        >
+          {loader ? <span>Downloading</span> : <span>Download</span>}
+        </Button>
+      </Grid>
     </Container>
   );
 };
 
 export default ViewResume;
+
+const styles = {
+  mainGrid: {
+    border: "0.5px solid gray",
+    marginTop: "20px",
+    borderRadius: "5px",
+    height: {
+      xs: "282vh",
+      sm: "266vh",
+      md: "147vh",
+      xl: "113vh",
+    },
+  },
+  itemOne: { padding: "15px", margin: "3% 0" },
+  fontOne: { fontFamily: "serif" },
+  boxOne: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  logoBox: {
+    height: "50px",
+    width: "50px",
+    borderBottom: "3px solid white",
+    borderTop: "3px solid white",
+    borderRight: "0.2px solid white",
+    borderLeft: "0.2px solid white",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: "5px",
+  },
+  logoName: {
+    fontWeight: "bolder",
+    color: "white",
+    fontSize: "1.5rem",
+    fontFamily: "serif",
+    fontStyle: "italic",
+  },
+  headFont: { fontSize: "2rem", fontFamily: "serif" },
+  resumeDataMain: {
+    flexDirection: {
+      xs: "column-reverse",
+      sm: "column-reverse",
+      md: "row",
+      xl: "row",
+    },
+  },
+  resumeDataRight: { padding: "10px", marginBottom: "3%" },
+  fontHead: {
+    color: "#383b3e",
+    fontSize: "1.8rem",
+    fontFamily: "serif",
+    fontStyle: "italic",
+  },
+  fontHeadTwo: {
+    color: "black",
+    fontSize: "1.1rem",
+    fontFamily: "serif",
+    fontStyle: "italic",
+  },
+  dividerStyle: { width: "90%", margin: "2% 0 2% 2%" },
+  componetStyles: {
+    color: "black",
+    fontSize: "1.3rem",
+    fontFamily: "serif",
+    fontStyle: "italic",
+  },
+  socialStyles: {
+    marginTop: "10px",
+    fontFamily: "serif",
+    marginLeft: "14px",
+    fontWeight: "bolder",
+  },
+  fortyPercentStyles: { backgroundColor: "#ddd0df" },
+  listStyles: { padding: "2px 0" },
+  listItemStyles: { padding: "4px 8px 4px 16px" },
+  listIconStyles: { minWidth: "35px" },
+  typoFontStyles: { fontFamily: "serif", fontSize: "18px" },
+  typoListStyles: {
+    fontFamily: "serif",
+    marginLeft: "14px",
+    fontWeight: "bolder",
+  },
+  dataFont: {
+    fontFamily: "serif",
+    textTransform: "capitalize",
+    marginLeft: "8px",
+    fontSize: "18px",
+  },
+  radioIcon: { fontSize: "13px" },
+  buttonGrid: { display: "flex", justifyContent: "center", marginTop: "2%" },
+};
