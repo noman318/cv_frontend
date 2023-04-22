@@ -17,7 +17,6 @@ import Footer from "./components/Footer";
 import CreateResumeScreen from "./Screens/CreateResumeScreen";
 import { isLoggedInPortal } from "./services/MyService";
 import ViewResume from "./Screens/ViewResume";
-import { Document, Page, Text } from "@react-pdf/renderer";
 
 function App() {
   const ProtectRoute = ({ children }) => {

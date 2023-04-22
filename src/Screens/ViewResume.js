@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getResumeById, getUser } from "../services/MyService";
-import { Document, Page, Text } from "@react-pdf/renderer";
 import {
   Typography,
   Grid,
@@ -25,6 +24,8 @@ import {
 } from "@mui/icons-material";
 import Educationdetails from "../components/Educationdetails";
 import ExperienceDetails from "../components/ExperienceDetails";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 const ViewResume = () => {
   const [resumeData, setResumeData] = useState();
@@ -32,6 +33,7 @@ const ViewResume = () => {
   const [hobbies, setHobbies] = useState();
   const [educationDetails, setEducationDetails] = useState([]);
   const [experienceDetails, setExperienceDetails] = useState([]);
+  const [loader, setLoader] = useState(false);
   const params = useParams();
   const singleId = params.id;
   //   console.log("singleId", singleId);
@@ -66,10 +68,19 @@ const ViewResume = () => {
   //   console.log("userInfo", userInfo);
   const firstNameInitials = userInfo?.firstName?.[0];
   const lastNameInitails = userInfo?.lastName?.[0];
-  const handlePrint = () => {
-    window.print();
+  const downloadPDF = () => {
+    const capture = document.querySelector(".full_resume");
+    setLoader(true);
+    html2canvas(capture).then((canvas) => {
+      const imgData = canvas.toDataURL("img/png");
+      const doc = new jsPDF("p", "mm", "a4");
+      const componentWidth = doc.internal.pageSize.getWidth();
+      const componentHeight = doc.internal.pageSize.getHeight();
+      doc.addImage(imgData, "PNG", 0, 0, componentWidth, componentHeight);
+      setLoader(false);
+      doc.save("resume.pdf");
+    });
   };
-
   return (
     <Container>
       <Grid
@@ -85,6 +96,7 @@ const ViewResume = () => {
           },
         }}
         aria-label="top_Level_grid"
+        className="full_resume"
       >
         <Grid item sx={{ padding: "15px", margin: "3% 0" }}>
           <Grid
@@ -376,7 +388,13 @@ const ViewResume = () => {
           </Grid>
         </Grid>
       </Grid>
-      <Button onClick={handlePrint}>Download PDF</Button>
+      <Button
+        className="receipt-modal-download-button"
+        onClick={downloadPDF}
+        disabled={!(loader === false)}
+      >
+        {loader ? <span>Downloading</span> : <span>Download</span>}
+      </Button>
     </Container>
   );
 };
