@@ -1,4 +1,4 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import "./App.css";
 import {
   BrowserRouter as Router,
@@ -6,17 +6,20 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import RegisterScreen from "./Screens/RegisterScreen";
 import Navbar from "./components/Navbar";
-import LoginScreen from "./Screens/LoginScreen";
 import { ToastContainer } from "react-toastify";
 import { Container } from "@mui/material";
 import "react-toastify/dist/ReactToastify.css";
-import HomeScreen from "./Screens/HomeScreen";
-import Footer from "./components/Footer";
-import CreateResumeScreen from "./Screens/CreateResumeScreen";
 import { isLoggedInPortal } from "./services/MyService";
-import ViewResume from "./Screens/ViewResume";
+import Loader from "./components/Loader";
+const LoginScreen = lazy(() => import("./Screens/LoginScreen"));
+const Footer = lazy(() => import("./components/Footer"));
+const CreateResumeScreen = lazy(() => import("./Screens/CreateResumeScreen"));
+const RegisterScreen = lazy(() => import("./Screens/RegisterScreen"));
+const HomeScreen = lazy(() => import("./Screens/HomeScreen"));
+const ViewResume = lazy(() => import("./Screens/ViewResume"));
+const EditResumeScreen = lazy(() => import("./Screens/EditResumeScreen"));
+const NotFoundScreen = lazy(() => import("./Screens/NotFoundScreen"));
 
 function App() {
   const ProtectRoute = ({ children }) => {
@@ -38,27 +41,45 @@ function App() {
             draggable
             theme="dark"
           />
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <ProtectRoute>
-                  <HomeScreen />
-                </ProtectRoute>
-              }
-            />
-            <Route
-              path="/add-resume"
-              element={
-                <ProtectRoute>
-                  <CreateResumeScreen />
-                </ProtectRoute>
-              }
-            />
-            <Route path="/view/:id" element={<ViewResume />} />
-            <Route path="/register" element={<RegisterScreen />} />
-            <Route path="/login" element={<LoginScreen />} />
-          </Routes>
+          <Suspense fallback={<Loader />}>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <ProtectRoute>
+                    <HomeScreen />
+                  </ProtectRoute>
+                }
+              />
+              <Route
+                path="/add-resume"
+                element={
+                  <ProtectRoute>
+                    <CreateResumeScreen />
+                  </ProtectRoute>
+                }
+              />
+              <Route
+                path="/view/:id"
+                element={
+                  <ProtectRoute>
+                    <ViewResume />
+                  </ProtectRoute>
+                }
+              />
+              <Route
+                path="/edit/:id"
+                element={
+                  <ProtectRoute>
+                    <EditResumeScreen />
+                  </ProtectRoute>
+                }
+              />
+              <Route path="/register" element={<RegisterScreen />} />
+              <Route path="/login" element={<LoginScreen />} />
+              <Route path="*" element={<NotFoundScreen />} />
+            </Routes>
+          </Suspense>
         </Container>
         <Footer />
       </Router>

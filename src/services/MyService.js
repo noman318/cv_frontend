@@ -33,6 +33,14 @@ const createNewResume = (token, data) => {
     },
   });
 };
+
+const editResume = (token, id, data) => {
+  return axios.put(`${apiUrl}resume/update-resume/${id}`, data, {
+    headers: {
+      token: `${token}`,
+    },
+  });
+};
 const getUser = () => {
   try {
     return jwt_decode(localStorage.getItem("_token"));
@@ -62,4 +70,5 @@ export {
   getAllResume,
   getResumeById,
   createNewResume,
+  editResume,
 };

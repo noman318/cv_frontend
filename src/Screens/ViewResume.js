@@ -45,7 +45,7 @@ const ViewResume = () => {
       .then((res) => {
         // console.log("res", res);
         const resumeDetails = res?.data?.resume;
-        // console.log("resumeDetails", resumeDetails);
+        console.log("resumeDetails", resumeDetails);
         const skillData = res?.data?.resume?.skills;
         const educationData = res?.data?.resume?.education;
         const experienceData = res?.data?.resume?.experience;
@@ -125,9 +125,7 @@ const ViewResume = () => {
                     Professional Summary
                   </Typography>
                   <Typography sx={styles.fontHeadTwo}>
-                    Motivated and result-oriented project manager with five
-                    years of experience in planning, monitoring and controlling
-                    projects to closure.
+                    {resumeData?.summary}
                   </Typography>
                 </Grid>
                 <Divider sx={styles.dividerStyle} />

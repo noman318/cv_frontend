@@ -11,7 +11,7 @@ import {
   Grid,
   IconButton,
 } from "@mui/material";
-import { Edit, Visibility, FileDownload } from "@mui/icons-material";
+import { Edit, Visibility } from "@mui/icons-material";
 import { useNavigate, Link } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import { getAllResume, getUser } from "../services/MyService";
@@ -147,7 +147,7 @@ export default function CardData() {
                         </Link>
                       </IconButton>
                     </Grid>
-                    <Grid item>
+                    {/* <Grid item>
                       <IconButton aria-label="edit">
                         <>
                           <FileDownload
@@ -155,7 +155,7 @@ export default function CardData() {
                           />
                         </>
                       </IconButton>
-                    </Grid>
+                    </Grid> */}
                   </Grid>
                 </Stack>
               </>

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, memo, useRef } from "react";
+import React, { useState, useCallback, memo, useRef, useEffect } from "react";
 import {
   Button,
   TextField as MUITextField,
@@ -10,10 +10,11 @@ import {
 } from "@mui/material";
 import { useFormik } from "formik";
 // eslint-disable-next-line
-import { Link, useNavigate } from "react-router-dom";
-import { createNewResume } from "../services/MyService";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { getResumeById, editResume } from "../services/MyService";
 import { toast } from "react-toastify";
 import { getUser } from "../services/MyService";
+import { resumeSchema } from "../schema/resumeSchema";
 
 const TextField = memo(MUITextField);
 
@@ -22,6 +23,7 @@ const initialValuesResume = {
   lastName: "",
   email: "",
   phone: "",
+  summary: "",
   skills: [],
   experience: [
     {
@@ -66,50 +68,122 @@ const INIT_EXP_FIELDS = {
   endDate: "",
 };
 
-export default function CreateResumeScreen() {
+export default function EditResumeScreen() {
+  const { errors, touched, handleBlur } = useFormik({
+    initialValues: initialValuesResume,
+    validationSchema: resumeSchema,
+    onSubmit: (values) => {
+      console.log(values);
+    },
+  });
+  const navigate = useNavigate();
+  const params = useParams();
+  const singleParams = params?.id;
+  //   console.log("singleParams", singleParams);
+  // eslint-disable-next-line
   const [experience, setExperience] = useState([INIT_EXP_FIELDS]);
+  // eslint-disable-next-line
   const [education, setEducation] = useState([INIT_EDU_FIELDS]);
+  const [educationData, setEducationData] = useState([]);
+  const [experienceData, setExperienceData] = useState([]);
   const [state, setState] = useState({ errMsg: "", succMsg: "" });
   const userInfo = getUser();
 
   const fname = userInfo?.firstName;
   const lname = userInfo?.lastName;
-  const userPhone = userInfo?.phone;
-  const userEmail = userInfo?.email;
   const [userValues, setUserValues] = useState({
     firstName: fname || "",
     lastName: lname || "",
-    email: userEmail || "",
-    phone: userPhone || "",
   });
   const skillRef = useRef();
   const hobbyRef = useRef();
-  // const navigate = useNavigate();
-
   const token = localStorage.getItem("_token");
-  // console.log("token", token);
+  // eslint-disable-next-line
+  const [resume, setResume] = useState({});
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    github: "",
+    linkedIn: "",
+    skype: "",
+    skills: [],
+    hobbies: [],
+    address: "",
+    education: [],
+    experience: [],
+  });
 
-  // console.log("skillData", skills);
-  // console.log("userInfo", userInfo);
+  useEffect(() => {
+    getResumeById(singleParams, token).then((res) => {
+      const { resume } = res.data;
+      setResume(resume);
+      setEducationData(resume?.education);
+      setExperienceData(resume?.experience);
+      setFormData({
+        firstName: resume.firstName || "",
+        lastName: resume.lastName || "",
+        email: resume.email || "",
+        phone: resume.phone || "",
+        github: resume.github || "",
+        linkedIn: resume.linkedIn || "",
+        skype: resume.skype || "",
+        skills: resume.skills || [],
+        hobbies: resume.hobbies || [],
+        address: resume.address || "",
+        summary: resume.summary || "",
+        education: resume.education || [],
+        experience: resume.experience || [],
+      });
+    });
+  }, [singleParams, token]);
+  //   console.log("resume", resume);
+  //   console.log("educationData", educationData);
+  //   console.log("experienceData", experienceData);
+  const handleInputChange = useCallback((index, event) => {
+    const { name, value } = event.target;
+    setEducationData((pre) => {
+      const copyPre = JSON.parse(JSON.stringify(pre));
+      const currObj = JSON.parse(JSON.stringify(copyPre[index] || {}));
+      delete currObj._id;
+
+      currObj[name] = value;
+      copyPre[index] = currObj;
+      return copyPre;
+    });
+    // console.log("Editing field", index, name, value);
+  }, []);
+  //   console.log("educationData", educationData);
+
+  const handleInputChangeExp = useCallback((index, event) => {
+    const { name, value } = event.target;
+    setExperienceData((pre) => {
+      const copyPre = JSON.parse(JSON.stringify(pre));
+      const currObj = JSON.parse(JSON.stringify(copyPre[index] || {}));
+      delete currObj._id;
+      currObj[name] = value;
+      copyPre[index] = currObj;
+      return copyPre;
+    });
+    // console.log("Editing field", index, name, value);
+  }, []);
+  //   console.log("experienceData", experienceData);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line
     const skills = skillRef.current.value;
-    const skillsArray =
-      typeof values.skills === "string"
-        ? values.skills?.split(",")?.map((skill) => skill.trim())
-        : [];
+    const skillsArray = skillRef.current.value
+      ?.split(",")
+      ?.map((skill) => skill?.trim());
     console.log("skillsArray", skillsArray);
-    // console.log("skilss in Ref data", skills);
     // eslint-disable-next-line
     const hobbies = hobbyRef.current.value;
-    // console.log("hobbies", hobbies);
-    const hobbiesArray =
-      typeof values.hobbies === "string"
-        ? values.hobbies?.split(",")?.map((hobby) => hobby.trim())
-        : [];
+    const hobbiesArray = hobbyRef.current.value
+      ?.split(",")
+      ?.map((hobby) => hobby?.trim());
     console.log("hobbiesArray", hobbiesArray);
     const formDataNew = {
       firstName: data.get("firstName"),
@@ -119,20 +193,24 @@ export default function CreateResumeScreen() {
       github: data.get("github"),
       linkedIn: data.get("linkedIn"),
       skype: data.get("skype"),
+      address: data.get("address"),
+      summary: data.get("summary"),
       skills: skillsArray,
       hobbies: hobbiesArray,
-      address: data.get("address"),
-      education: education,
-      experience: experience,
+      education: educationData,
+      experience: experienceData,
     };
     console.log("formDataNew", formDataNew);
-    createNewResume(token, formDataNew)
+    editResume(token, singleParams, formDataNew)
       .then((res) => {
         console.log(res);
         // eslint-disable-next-line
         if (res.data.err == 0) {
           setState({ ...state, succMsg: res.data.msg });
-          toast.success("Created Successfully");
+          toast.success("Updated Successfully");
+          setTimeout(() => {
+            navigate("/");
+          }, 3000);
         }
         // eslint-disable-next-line
         if (res.data.err == 1) {
@@ -145,62 +223,39 @@ export default function CreateResumeScreen() {
       });
   };
 
-  const handleInputChange = useCallback((index, event) => {
-    const { name, value } = event.target;
-    setEducation((pre) => {
-      const copyPre = JSON.parse(JSON.stringify(pre));
-      const currObj = JSON.parse(JSON.stringify(copyPre[index] || {}));
-      currObj[name] = value;
-      copyPre[index] = currObj;
-      return copyPre;
-    });
-  }, []);
-  // console.log("education", education);
-
-  const handleInputChangeExp = useCallback((index, event) => {
-    const { name, value } = event.target;
-    setExperience((pre) => {
-      const copyPre = JSON.parse(JSON.stringify(pre));
-      const currObj = JSON.parse(JSON.stringify(copyPre[index] || {}));
-      currObj[name] = value;
-      copyPre[index] = currObj;
-      return copyPre;
-    });
-  }, []);
-  // console.log("experience", experience);
-
-  const { values, errors, touched, handleBlur, handleChange } = useFormik({
-    initialValues: initialValuesResume,
-    onSubmit: (values) => {
-      console.log("values", values);
-    },
-  });
-
   const onAddEducation = () => {
-    setEducation((pre) => [...pre, INIT_EDU_FIELDS]);
+    setEducationData((pre) => [...pre, INIT_EDU_FIELDS]);
   };
 
   const onDeleteEduBox = (curindex) => {
-    setEducation((pre) => {
+    setEducationData((pre) => {
       return pre.filter((_, i) => i !== curindex);
     });
   };
 
   const onAddExperience = () => {
-    setExperience((pre) => [...pre, INIT_EXP_FIELDS]);
+    setExperienceData((pre) => [...pre, INIT_EXP_FIELDS]);
   };
 
   const onDeleteExpBox = (curindex) => {
-    setExperience((pre) => {
+    setExperienceData((pre) => {
       return pre.filter((_, i) => i !== curindex);
     });
   };
+
+  // const getError = (field) => {
+  //   return errors[field] && touched[field] ? (
+  //     <Typography variant="caption" sx={{ color: "red" }}>
+  //       {errors[field]}
+  //     </Typography>
+  //   ) : null;
+  // };
 
   return (
     <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
       <Container>
         <Typography variant="h5" gutterBottom>
-          Create New Resume
+          Edit Resume
         </Typography>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
@@ -212,12 +267,11 @@ export default function CreateResumeScreen() {
               color="secondary"
               id="firstName"
               label="First Name"
-              value={userValues.firstName}
+              value={userValues?.firstName}
               onChange={(e) =>
                 setUserValues({ ...userValues, firstName: e.target.value })
               }
               onBlur={handleBlur}
-              autoFocus
             />
             {errors.firstName && touched.firstName ? (
               <Typography variant="caption" sx={{ color: "red" }}>
@@ -236,7 +290,7 @@ export default function CreateResumeScreen() {
               color="secondary"
               name="lastName"
               autoComplete="family-name"
-              value={userValues.lastName}
+              value={userValues?.lastName}
               onChange={(e) =>
                 setUserValues({ ...userValues, lastName: e.target.value })
               }
@@ -260,9 +314,9 @@ export default function CreateResumeScreen() {
               type="email"
               color="secondary"
               autoComplete="email"
-              value={userValues.email}
+              value={formData?.email}
               onChange={(e) =>
-                setUserValues({ ...userValues, email: e.target.value })
+                setFormData({ ...formData, email: e.target.value })
               }
               onBlur={handleBlur}
             />
@@ -283,9 +337,9 @@ export default function CreateResumeScreen() {
               name="phone"
               color="secondary"
               autoComplete="phone"
-              value={userValues.phone}
+              value={formData?.phone}
               onChange={(e) =>
-                setUserValues({ ...userValues, phone: e.target.value })
+                setFormData({ ...formData, phone: e.target.value })
               }
               onBlur={handleBlur}
             />
@@ -306,9 +360,10 @@ export default function CreateResumeScreen() {
               color="secondary"
               id="github"
               label="GitHub Link"
-              autoFocus
-              value={values.github}
-              onChange={handleChange}
+              value={formData?.github}
+              onChange={(e) =>
+                setFormData({ ...formData, github: e.target.value })
+              }
               onBlur={handleBlur}
             />
             {errors.github && touched.github ? (
@@ -328,9 +383,11 @@ export default function CreateResumeScreen() {
               color="secondary"
               name="linkedIn"
               autoComplete="family-name"
-              value={values.linkedIn}
+              value={formData?.linkedIn}
               onBlur={handleBlur}
-              onChange={handleChange}
+              onChange={(e) =>
+                setFormData({ ...formData, linkedIn: e.target.value })
+              }
             />
             {errors.linkedIn && touched.linkedIn ? (
               <Typography variant="caption" sx={{ color: "red" }}>
@@ -350,9 +407,11 @@ export default function CreateResumeScreen() {
               id="skype"
               label="Skype Id"
               autoFocus
-              value={values.skype}
+              value={formData?.skype}
               onBlur={handleBlur}
-              onChange={handleChange}
+              onChange={(e) =>
+                setFormData({ ...formData, skype: e.target.value })
+              }
             />
             {errors.skype && touched.skype ? (
               <Typography variant="caption" sx={{ color: "red" }}>
@@ -371,9 +430,11 @@ export default function CreateResumeScreen() {
               color="secondary"
               name="twitter"
               autoComplete="family-name"
-              value={values.twitter}
+              value={formData?.twitter}
               onBlur={handleBlur}
-              onChange={handleChange}
+              onChange={(e) =>
+                setFormData({ ...formData, twitter: e.target.value })
+              }
             />
             {errors.twitter && touched.twitter ? (
               <Typography variant="caption" sx={{ color: "red" }}>
@@ -394,9 +455,11 @@ export default function CreateResumeScreen() {
               id="skills"
               color="secondary"
               autoComplete="skills"
-              value={values.skills}
+              value={formData?.skills}
               onBlur={handleBlur}
-              onChange={handleChange}
+              onChange={(e) =>
+                setFormData({ ...formData, skills: e.target.value })
+              }
               multiline
               rows={2}
             />
@@ -419,9 +482,11 @@ export default function CreateResumeScreen() {
               id="hobbies"
               color="secondary"
               autoComplete="hobbies"
-              value={values.hobbies}
+              value={formData?.hobbies}
               onBlur={handleBlur}
-              onChange={handleChange}
+              onChange={(e) =>
+                setFormData({ ...formData, hobbies: e.target.value })
+              }
               multiline
               rows={2}
             />
@@ -443,9 +508,11 @@ export default function CreateResumeScreen() {
               id="address"
               color="secondary"
               autoComplete="address"
-              value={values.address}
+              value={formData?.address}
               onBlur={handleBlur}
-              onChange={handleChange}
+              onChange={(e) =>
+                setFormData({ ...formData, address: e.target.value })
+              }
               multiline
               rows={2}
             />
@@ -464,13 +531,14 @@ export default function CreateResumeScreen() {
               name="summary"
               label="Summary"
               type="text"
-              placeholder="Describe yourself in few sentences."
               id="summary"
               color="secondary"
               autoComplete="summary"
-              value={values.summary}
+              value={formData?.summary}
               onBlur={handleBlur}
-              onChange={handleChange}
+              onChange={(e) =>
+                setFormData({ ...formData, summary: e.target.value })
+              }
               multiline
               rows={2}
             />
@@ -491,7 +559,7 @@ export default function CreateResumeScreen() {
             Add Education
           </Button>
           <br />
-          {education?.map((data, index) => {
+          {educationData?.map((data, index) => {
             return (
               <>
                 <Button
@@ -512,7 +580,7 @@ export default function CreateResumeScreen() {
                     id="institution"
                     color="secondary"
                     autoComplete="institution"
-                    // value={data.institution}
+                    value={data.institution}
                     onChange={(event) => handleInputChange(index, event)}
                   />
                   {errors.institution && touched.institution ? (
@@ -533,18 +601,17 @@ export default function CreateResumeScreen() {
                     id="degree"
                     color="secondary"
                     autoComplete="degree"
-                    // value={data.degree}
+                    value={data.degree}
                     onChange={(event) => handleInputChange(index, event)}
                     error={errors.degree && touched.degree}
-                    helperTex={touched.degree && errors.degree}
                   />
-                  {/* {errors.degree && touched.degree ? (
+                  {errors.degree && touched.degree ? (
                     <Typography variant="caption" sx={{ color: "red" }}>
                       {errors.degree}
                     </Typography>
                   ) : (
                     ""
-                  )} */}
+                  )}
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -556,7 +623,7 @@ export default function CreateResumeScreen() {
                     id="percentage"
                     color="secondary"
                     autoComplete="percentage"
-                    // value={data.percentage}
+                    value={data.percentage}
                     onChange={(event) => handleInputChange(index, event)}
                   />
                   {errors.percentage && touched.percentage ? (
@@ -577,7 +644,7 @@ export default function CreateResumeScreen() {
                     id="fieldOfStudy"
                     color="secondary"
                     autoComplete="fieldOfStudy"
-                    // value={data.fieldOfStudy}
+                    value={data.fieldOfStudy}
                     onChange={(event) => handleInputChange(index, event)}
                   />
                   {errors.fieldOfStudy && touched.fieldOfStudy ? (
@@ -598,7 +665,13 @@ export default function CreateResumeScreen() {
                     id="startDate"
                     color="secondary"
                     autoComplete="startDate"
-                    // value={data.startDate}
+                    value={
+                      data?.startDate
+                        ? new Date(data?.startDate)
+                            ?.toISOString()
+                            ?.substr(0, 10)
+                        : ""
+                    }
                     onChange={(event) => handleInputChange(index, event)}
                   />
                   {errors.startDate && touched.startDate ? (
@@ -619,7 +692,11 @@ export default function CreateResumeScreen() {
                     id="endDate"
                     color="secondary"
                     autoComplete="endDate"
-                    // value={data.endDate}
+                    value={
+                      data?.endDate
+                        ? new Date(data?.endDate)?.toISOString()?.substr(0, 10)
+                        : ""
+                    }
                     onChange={(event) => handleInputChange(index, event)}
                   />
                   {errors.endDate && touched.endDate ? (
@@ -651,7 +728,7 @@ export default function CreateResumeScreen() {
             Add Expereince
           </Button>
           <br />
-          {experience?.map((data, index) => {
+          {experienceData?.map((data, index) => {
             return (
               <>
                 <Button
@@ -672,6 +749,7 @@ export default function CreateResumeScreen() {
                     id="company"
                     color="secondary"
                     autoComplete="company"
+                    value={data.company}
                     onChange={(event) => handleInputChangeExp(index, event)}
                   />
                   {errors.company && touched.company ? (
@@ -692,6 +770,7 @@ export default function CreateResumeScreen() {
                     id="location"
                     color="secondary"
                     autoComplete="location"
+                    value={data.location}
                     onChange={(event) => handleInputChangeExp(index, event)}
                   />
                   {errors.location && touched.location ? (
@@ -712,6 +791,7 @@ export default function CreateResumeScreen() {
                     id="position"
                     color="secondary"
                     autoComplete="position"
+                    value={data.position}
                     onChange={(event) => handleInputChangeExp(index, event)}
                   />
                   {errors.position && touched.position ? (
@@ -732,6 +812,13 @@ export default function CreateResumeScreen() {
                     id="startDate"
                     color="secondary"
                     autoComplete="startDate"
+                    value={
+                      data?.startDate
+                        ? new Date(data?.startDate)
+                            ?.toISOString()
+                            ?.substr(0, 10)
+                        : ""
+                    }
                     onChange={(event) => handleInputChangeExp(index, event)}
                   />
                   {errors.startDate && touched.startDate ? (
@@ -752,6 +839,11 @@ export default function CreateResumeScreen() {
                     id="endDate"
                     color="secondary"
                     autoComplete="endDate"
+                    value={
+                      data?.endDate
+                        ? new Date(data?.endDate)?.toISOString()?.substr(0, 10)
+                        : ""
+                    }
                     onChange={(event) => handleInputChangeExp(index, event)}
                   />
                   {errors.endDate && touched.endDate ? (
@@ -773,7 +865,7 @@ export default function CreateResumeScreen() {
           sx={{ mt: 3, mb: 2 }}
           color="secondary"
         >
-          Create Resume
+          Update Resume
         </Button>
       </Container>
     </Box>
