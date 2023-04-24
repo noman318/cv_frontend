@@ -10,6 +10,8 @@ import {
   CardContent,
   Grid,
   IconButton,
+  Tooltip,
+  Zoom,
 } from "@mui/material";
 import { Edit, Visibility } from "@mui/icons-material";
 import { useNavigate, Link } from "react-router-dom";
@@ -17,8 +19,10 @@ import AddIcon from "@mui/icons-material/Add";
 import { getAllResume, getUser } from "../services/MyService";
 export default function CardData() {
   const getUserInfo = getUser();
-  // console.log("getUserInfo", getUserInfo);
+  console.log("getUserInfo", getUserInfo);
   const { _id } = getUserInfo;
+  const { firstName } = getUserInfo;
+  const { lastName } = getUserInfo;
   const token = localStorage.getItem("_token");
   // console.log("_id", _id);
   const [allResume, setAllResume] = useState([]);
@@ -35,25 +39,7 @@ export default function CardData() {
     navigate("/add-resume");
   };
   return (
-    <Grid sx={styles.mainGrid}>
-      <Card sx={styles.addCardStyle} aria-label="card_main">
-        <CardActionArea onClick={handleNewResume} sx={styles.addCardBg}>
-          <AddIcon sx={styles.addIcon} />
-        </CardActionArea>
-        <CardActions sx={styles.cardAction}>
-          <Typography
-            gutterBottom
-            variant="button"
-            component="div"
-            textAlign={"center"}
-          >
-            Create New
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Create a new Resume.
-          </Typography>
-        </CardActions>
-      </Card>
+    <Grid sx={styles.mainGrid} aria-label="main_grid">
       <Stack aria-label="new_data" sx={styles.stackStyles}>
         {allResume.map((data) => (
           <Card
@@ -67,7 +53,7 @@ export default function CardData() {
               fontWeight={"bold"}
               textAlign="center"
             >
-              Resumes
+              {`${firstName} ${lastName}`}
             </Typography>
             <CardMedia
               component="img"
@@ -86,7 +72,7 @@ export default function CardData() {
             >
               <>
                 <Stack aria-label="icon_buttons" direction="row" spacing={1}>
-                  <Grid container spacing={1}>
+                  <Grid container spacing={1} aria-label="icon_group">
                     <Grid item>
                       <IconButton aria-label="view">
                         <Link to={`/view/${data?._id}`}>
@@ -117,12 +103,25 @@ export default function CardData() {
           </Card>
         ))}
       </Stack>
+      <Card sx={styles.addCardStyle} aria-label="card_main">
+        {/* <CardActionArea onClick={handleNewResume} sx={styles.addCardBg}>
+          <AddIcon sx={styles.addIcon} />
+        </CardActionArea> */}
+
+        <Tooltip TransitionComponent={Zoom} title="Create New Resume">
+          <IconButton onClick={handleNewResume}>
+            <AddIcon sx={styles.addIcon} />
+          </IconButton>
+        </Tooltip>
+      </Card>
     </Grid>
   );
 }
 const styles = {
   mainGrid: {
     display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
     flexDirection: { xs: "column", sm: "column", md: "row" },
   },
   addCardStyle: {
@@ -135,9 +134,8 @@ const styles = {
   addIcon: {
     color: "black",
     width: "100%",
-    fontSize: "12rem",
+    fontSize: "2rem",
     // fontWeight: "bold",
-    backgroundColor: "#c77dff",
   },
   cardAction: {
     display: "flex",
@@ -156,7 +154,11 @@ const styles = {
     width: "100%",
     height: { xs: "20%", sm: "20%", md: "80%" },
     margin: "25px 0 0 0",
+    transition: "box-shadow 0.3s ease-in-out",
+    "&:hover": {
+      boxShadow: "0px 0px 20px 0px rgba(0,0,0,0.75)",
+    },
   },
-  allActionCard: { display: "flex", justifyContent: "center" },
-  resumeActionIcon: { fontSize: "2rem", color: "purple" },
+  allActionCard: { display: "flex", justifyContent: "flex-end" },
+  resumeActionIcon: { fontSize: "2rem", color: "black" },
 };

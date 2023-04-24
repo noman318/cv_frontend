@@ -3,7 +3,7 @@ import { CircularProgress, Grid } from "@mui/material";
 function Loader() {
   return (
     <Grid sx={styles.loaderComponentStyles}>
-      <CircularProgress color="secondary" />
+      <CircularProgress />
     </Grid>
   );
 }

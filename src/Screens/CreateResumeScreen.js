@@ -14,6 +14,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { createNewResume } from "../services/MyService";
 import { toast } from "react-toastify";
 import { getUser } from "../services/MyService";
+import { resumeSchema } from "../schema/resumeSchema";
 
 const TextField = memo(MUITextField);
 
@@ -119,6 +120,7 @@ export default function CreateResumeScreen() {
       github: data.get("github"),
       linkedIn: data.get("linkedIn"),
       skype: data.get("skype"),
+      summary: data.get("summary"),
       skills: skillsArray,
       hobbies: hobbiesArray,
       address: data.get("address"),
@@ -171,6 +173,7 @@ export default function CreateResumeScreen() {
 
   const { values, errors, touched, handleBlur, handleChange } = useFormik({
     initialValues: initialValuesResume,
+    validationSchema: resumeSchema,
     onSubmit: (values) => {
       console.log("values", values);
     },
@@ -214,7 +217,7 @@ export default function CreateResumeScreen() {
               name="firstName"
               required
               fullWidth
-              color="secondary"
+              color="primary"
               id="firstName"
               label="First Name"
               value={userValues.firstName}
@@ -222,7 +225,6 @@ export default function CreateResumeScreen() {
                 setUserValues({ ...userValues, firstName: e.target.value })
               }
               onBlur={handleBlur}
-              autoFocus
             />
             {errors.firstName && touched.firstName ? (
               <Typography variant="caption" sx={styles.error}>
@@ -238,7 +240,7 @@ export default function CreateResumeScreen() {
               fullWidth
               id="lastName"
               label="Last Name"
-              color="secondary"
+              color="primary"
               name="lastName"
               autoComplete="family-name"
               value={userValues.lastName}
@@ -263,7 +265,7 @@ export default function CreateResumeScreen() {
               label="Email Address"
               name="email"
               type="email"
-              color="secondary"
+              color="primary"
               autoComplete="email"
               value={userValues.email}
               onChange={(e) =>
@@ -286,7 +288,7 @@ export default function CreateResumeScreen() {
               id="phone"
               label="Contact Number"
               name="phone"
-              color="secondary"
+              color="primary"
               autoComplete="phone"
               value={userValues.phone}
               onChange={(e) =>
@@ -308,10 +310,9 @@ export default function CreateResumeScreen() {
               name="github"
               required
               fullWidth
-              color="secondary"
+              color="primary"
               id="github"
               label="GitHub Link"
-              autoFocus
               value={values.github}
               onChange={handleChange}
               onBlur={handleBlur}
@@ -330,7 +331,7 @@ export default function CreateResumeScreen() {
               fullWidth
               id="linkedIn"
               label="Linked Account"
-              color="secondary"
+              color="primary"
               name="linkedIn"
               autoComplete="family-name"
               value={values.linkedIn}
@@ -351,10 +352,9 @@ export default function CreateResumeScreen() {
               name="skype"
               required
               fullWidth
-              color="secondary"
+              color="primary"
               id="skype"
               label="Skype Id"
-              autoFocus
               value={values.skype}
               onBlur={handleBlur}
               onChange={handleChange}
@@ -373,7 +373,7 @@ export default function CreateResumeScreen() {
               fullWidth
               id="twitter"
               label="Twitter Handler"
-              color="secondary"
+              color="primary"
               name="twitter"
               autoComplete="family-name"
               value={values.twitter}
@@ -397,7 +397,7 @@ export default function CreateResumeScreen() {
               label="Skills"
               type="text"
               id="skills"
-              color="secondary"
+              color="primary"
               autoComplete="skills"
               value={values.skills}
               onBlur={handleBlur}
@@ -422,7 +422,7 @@ export default function CreateResumeScreen() {
               label="Hobbies"
               type="text"
               id="hobbies"
-              color="secondary"
+              color="primary"
               autoComplete="hobbies"
               value={values.hobbies}
               onBlur={handleBlur}
@@ -446,7 +446,7 @@ export default function CreateResumeScreen() {
               label="Address"
               type="address"
               id="address"
-              color="secondary"
+              color="primary"
               autoComplete="address"
               value={values.address}
               onBlur={handleBlur}
@@ -471,7 +471,7 @@ export default function CreateResumeScreen() {
               type="text"
               placeholder="Describe yourself in few sentences."
               id="summary"
-              color="secondary"
+              color="primary"
               autoComplete="summary"
               value={values.summary}
               onBlur={handleBlur}
@@ -499,7 +499,7 @@ export default function CreateResumeScreen() {
               <>
                 <Button
                   variant="outlined"
-                  color="secondary"
+                  color="error"
                   onClick={() => onDeleteEduBox(index)}
                   sx={styles.buttonStyles}
                 >
@@ -513,7 +513,7 @@ export default function CreateResumeScreen() {
                     label="Institution"
                     type="institution"
                     id="institution"
-                    color="secondary"
+                    color="primary"
                     autoComplete="institution"
                     // value={data.institution}
                     onChange={(event) => handleInputChange(index, event)}
@@ -534,7 +534,7 @@ export default function CreateResumeScreen() {
                     label="degree"
                     type="degree"
                     id="degree"
-                    color="secondary"
+                    color="primary"
                     autoComplete="degree"
                     // value={data.degree}
                     onChange={(event) => handleInputChange(index, event)}
@@ -557,7 +557,7 @@ export default function CreateResumeScreen() {
                     label="percentage"
                     type="percentage"
                     id="percentage"
-                    color="secondary"
+                    color="primary"
                     autoComplete="percentage"
                     // value={data.percentage}
                     onChange={(event) => handleInputChange(index, event)}
@@ -578,7 +578,7 @@ export default function CreateResumeScreen() {
                     label="Field Of Study"
                     type="fieldOfStudy"
                     id="fieldOfStudy"
-                    color="secondary"
+                    color="primary"
                     autoComplete="fieldOfStudy"
                     // value={data.fieldOfStudy}
                     onChange={(event) => handleInputChange(index, event)}
@@ -599,10 +599,13 @@ export default function CreateResumeScreen() {
                     label="Start Date"
                     type="date"
                     id="startDate"
-                    color="secondary"
+                    color="primary"
                     autoComplete="startDate"
                     // value={data.startDate}
                     onChange={(event) => handleInputChange(index, event)}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
                   />
                   {errors.startDate && touched.startDate ? (
                     <Typography variant="caption" sx={styles.error}>
@@ -620,10 +623,13 @@ export default function CreateResumeScreen() {
                     label="End Date"
                     type="date"
                     id="endDate"
-                    color="secondary"
+                    color="primary"
                     autoComplete="endDate"
                     // value={data.endDate}
                     onChange={(event) => handleInputChange(index, event)}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
                   />
                   {errors.endDate && touched.endDate ? (
                     <Typography variant="caption" sx={styles.error}>
@@ -659,7 +665,7 @@ export default function CreateResumeScreen() {
               <>
                 <Button
                   variant="outlined"
-                  color="secondary"
+                  color="error"
                   onClick={() => onDeleteExpBox(index)}
                   sx={styles.buttonStyles}
                 >
@@ -673,7 +679,7 @@ export default function CreateResumeScreen() {
                     label="Company"
                     type="company"
                     id="company"
-                    color="secondary"
+                    color="primary"
                     autoComplete="company"
                     onChange={(event) => handleInputChangeExp(index, event)}
                   />
@@ -693,7 +699,7 @@ export default function CreateResumeScreen() {
                     label="Location"
                     type="location"
                     id="location"
-                    color="secondary"
+                    color="primary"
                     autoComplete="location"
                     onChange={(event) => handleInputChangeExp(index, event)}
                   />
@@ -713,7 +719,7 @@ export default function CreateResumeScreen() {
                     label="Position"
                     type="position"
                     id="position"
-                    color="secondary"
+                    color="primary"
                     autoComplete="position"
                     onChange={(event) => handleInputChangeExp(index, event)}
                   />
@@ -733,9 +739,12 @@ export default function CreateResumeScreen() {
                     label="Start Date"
                     type="date"
                     id="startDate"
-                    color="secondary"
+                    color="primary"
                     autoComplete="startDate"
                     onChange={(event) => handleInputChangeExp(index, event)}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
                   />
                   {errors.startDate && touched.startDate ? (
                     <Typography variant="caption" sx={styles.error}>
@@ -753,9 +762,12 @@ export default function CreateResumeScreen() {
                     label="End Date"
                     type="date"
                     id="endDate"
-                    color="secondary"
+                    color="primary"
                     autoComplete="endDate"
                     onChange={(event) => handleInputChangeExp(index, event)}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
                   />
                   {errors.endDate && touched.endDate ? (
                     <Typography variant="caption" sx={styles.error}>
@@ -774,7 +786,7 @@ export default function CreateResumeScreen() {
           fullWidth
           variant="contained"
           sx={styles.actionButton}
-          color="secondary"
+          color="primary"
         >
           Create Resume
         </Button>

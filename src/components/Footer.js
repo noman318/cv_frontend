@@ -39,7 +39,7 @@ const styles = {
     flexDirection: "column",
     flexWrap: "wrap",
     alignItems: "center",
-    backgroundColor: "#9d4edd",
+    backgroundColor: "#4e66dd",
     color: "white",
     textAlign: "center",
   },

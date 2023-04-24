@@ -11,12 +11,13 @@ import {
   Tooltip,
   MenuItem,
 } from "@mui/material";
+import logoPng from "../data/logo.png";
 
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import { doLogout, getUser, isLoggedInPortal } from "../services/MyService";
 import { useNavigate } from "react-router-dom";
 
-const settings = ["Profile", "Resume", "Logout"];
+const settings = ["Logout"];
 const loginReg = ["Login", "Register"];
 
 function Navbar() {
@@ -57,32 +58,31 @@ function Navbar() {
   };
 
   return (
-    <AppBar position="static" color="secondary">
+    <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar
           disableGutters
           aria-label="navbar_tools"
           sx={styles.toolbarStyles}
         >
-          <Typography
+          <Box
+            component="img"
+            src={logoPng}
             variant="h6"
             noWrap
-            component="a"
-            href="/"
             sx={styles.myLogo}
-          >
-            myCV
-          </Typography>
+            alt="My Logo"
+            onClick={() => navigate("/")}
+          />
 
-          <Typography
-            variant="h5"
+          {/* <Box
+            component="img"
+            src={logoPng}
+            variant="h6"
             noWrap
-            component="a"
-            href=""
-            sx={styles.myLogoResponsive}
-          >
-            myCV
-          </Typography>
+            sx={styles.myLogo}
+            alt="My Logo"
+          /> */}
           <Box sx={styles.boxStyles}>
             <Tooltip>
               {getUserInfo ? (
@@ -180,11 +180,11 @@ export default Navbar;
 const styles = {
   myLogo: {
     mr: 2,
-    display: { xs: "none", md: "flex" },
-    fontWeight: 700,
-    letterSpacing: ".3rem",
-    color: "inherit",
-    textDecoration: "none",
+    // display: { xs: "none", md: "flex" },
+    height: "50px",
+    width: "50px",
+    p: 2,
+    cursor: "pointer",
   },
   myLogoResponsive: {
     mr: 2,

@@ -269,7 +269,7 @@ export default function EditResumeScreen() {
               name="firstName"
               required
               fullWidth
-              color="secondary"
+              color="primary"
               id="firstName"
               label="First Name"
               value={userValues?.firstName}
@@ -292,7 +292,7 @@ export default function EditResumeScreen() {
               fullWidth
               id="lastName"
               label="Last Name"
-              color="secondary"
+              color="primary"
               name="lastName"
               autoComplete="family-name"
               value={userValues?.lastName}
@@ -317,7 +317,7 @@ export default function EditResumeScreen() {
               label="Email Address"
               name="email"
               type="email"
-              color="secondary"
+              color="primary"
               autoComplete="email"
               value={formData?.email}
               onChange={(e) =>
@@ -340,7 +340,7 @@ export default function EditResumeScreen() {
               id="phone"
               label="Contact Number"
               name="phone"
-              color="secondary"
+              color="primary"
               autoComplete="phone"
               value={formData?.phone}
               onChange={(e) =>
@@ -362,7 +362,7 @@ export default function EditResumeScreen() {
               name="github"
               required
               fullWidth
-              color="secondary"
+              color="primary"
               id="github"
               label="GitHub Link"
               value={formData?.github}
@@ -385,7 +385,7 @@ export default function EditResumeScreen() {
               fullWidth
               id="linkedIn"
               label="Linked Account"
-              color="secondary"
+              color="primary"
               name="linkedIn"
               autoComplete="family-name"
               value={formData?.linkedIn}
@@ -408,7 +408,7 @@ export default function EditResumeScreen() {
               name="skype"
               required
               fullWidth
-              color="secondary"
+              color="primary"
               id="skype"
               label="Skype Id"
               autoFocus
@@ -432,7 +432,7 @@ export default function EditResumeScreen() {
               fullWidth
               id="twitter"
               label="Twitter Handler"
-              color="secondary"
+              color="primary"
               name="twitter"
               autoComplete="family-name"
               value={formData?.twitter}
@@ -458,7 +458,7 @@ export default function EditResumeScreen() {
               label="Skills"
               type="text"
               id="skills"
-              color="secondary"
+              color="primary"
               autoComplete="skills"
               value={formData?.skills}
               onBlur={handleBlur}
@@ -485,7 +485,7 @@ export default function EditResumeScreen() {
               label="Hobbies"
               type="text"
               id="hobbies"
-              color="secondary"
+              color="primary"
               autoComplete="hobbies"
               value={formData?.hobbies}
               onBlur={handleBlur}
@@ -511,7 +511,7 @@ export default function EditResumeScreen() {
               label="Address"
               type="address"
               id="address"
-              color="secondary"
+              color="primary"
               autoComplete="address"
               value={formData?.address}
               onBlur={handleBlur}
@@ -537,7 +537,7 @@ export default function EditResumeScreen() {
               label="Summary"
               type="text"
               id="summary"
-              color="secondary"
+              color="primary"
               autoComplete="summary"
               value={formData?.summary}
               onBlur={handleBlur}
@@ -567,7 +567,7 @@ export default function EditResumeScreen() {
               <>
                 <Button
                   variant="outlined"
-                  color="secondary"
+                  color="primary"
                   onClick={() => onDeleteEduBox(index)}
                   sx={styles.buttonStyles}
                 >
@@ -581,7 +581,7 @@ export default function EditResumeScreen() {
                     label="Institution"
                     type="institution"
                     id="institution"
-                    color="secondary"
+                    color="primary"
                     autoComplete="institution"
                     value={data.institution}
                     onChange={(event) => handleInputChange(index, event)}
@@ -602,7 +602,7 @@ export default function EditResumeScreen() {
                     label="degree"
                     type="degree"
                     id="degree"
-                    color="secondary"
+                    color="primary"
                     autoComplete="degree"
                     value={data.degree}
                     onChange={(event) => handleInputChange(index, event)}
@@ -624,7 +624,7 @@ export default function EditResumeScreen() {
                     label="percentage"
                     type="percentage"
                     id="percentage"
-                    color="secondary"
+                    color="primary"
                     autoComplete="percentage"
                     value={data.percentage}
                     onChange={(event) => handleInputChange(index, event)}
@@ -645,7 +645,7 @@ export default function EditResumeScreen() {
                     label="Field Of Study"
                     type="fieldOfStudy"
                     id="fieldOfStudy"
-                    color="secondary"
+                    color="primary"
                     autoComplete="fieldOfStudy"
                     value={data.fieldOfStudy}
                     onChange={(event) => handleInputChange(index, event)}
@@ -666,7 +666,7 @@ export default function EditResumeScreen() {
                     label="Start Date"
                     type="date"
                     id="startDate"
-                    color="secondary"
+                    color="primary"
                     autoComplete="startDate"
                     value={
                       data?.startDate
@@ -693,7 +693,7 @@ export default function EditResumeScreen() {
                     label="End Date"
                     type="date"
                     id="endDate"
-                    color="secondary"
+                    color="primary"
                     autoComplete="endDate"
                     value={
                       data?.endDate
@@ -734,7 +734,7 @@ export default function EditResumeScreen() {
               <>
                 <Button
                   variant="outlined"
-                  color="secondary"
+                  color="error"
                   onClick={() => onDeleteExpBox(index)}
                   sx={styles.buttonStyles}
                 >
@@ -748,7 +748,7 @@ export default function EditResumeScreen() {
                     label="Company"
                     type="company"
                     id="company"
-                    color="secondary"
+                    color="primary"
                     autoComplete="company"
                     value={data.company}
                     onChange={(event) => handleInputChangeExp(index, event)}
@@ -769,7 +769,7 @@ export default function EditResumeScreen() {
                     label="Location"
                     type="location"
                     id="location"
-                    color="secondary"
+                    color="primary"
                     autoComplete="location"
                     value={data.location}
                     onChange={(event) => handleInputChangeExp(index, event)}
@@ -790,7 +790,7 @@ export default function EditResumeScreen() {
                     label="Position"
                     type="position"
                     id="position"
-                    color="secondary"
+                    color="primary"
                     autoComplete="position"
                     value={data.position}
                     onChange={(event) => handleInputChangeExp(index, event)}
@@ -811,7 +811,7 @@ export default function EditResumeScreen() {
                     label="Start Date"
                     type="date"
                     id="startDate"
-                    color="secondary"
+                    color="primary"
                     autoComplete="startDate"
                     value={
                       data?.startDate
@@ -838,7 +838,7 @@ export default function EditResumeScreen() {
                     label="End Date"
                     type="date"
                     id="endDate"
-                    color="secondary"
+                    color="primary"
                     autoComplete="endDate"
                     value={
                       data?.endDate

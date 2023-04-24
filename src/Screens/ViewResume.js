@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getResumeById, getUser } from "../services/MyService";
 import {
   Typography,
@@ -84,6 +84,17 @@ const ViewResume = () => {
   };
   return (
     <Container>
+      <Grid sx={styles.buttonGrid}>
+        <Button
+          variant="contained"
+          color="success"
+          onClick={downloadPDF}
+          disabled={!(loader === false)}
+          startIcon={<FileDownload />}
+        >
+          {loader ? <span>Downloading</span> : <span>Download</span>}
+        </Button>
+      </Grid>
       <Grid
         sx={styles.mainGrid}
         aria-label="top_Level_grid"
@@ -91,7 +102,7 @@ const ViewResume = () => {
       >
         <Grid item sx={styles.itemOne}>
           <Grid item width={"100%"} aria-label="main_paper" sx={styles.fontOne}>
-            <Grid item height={"10%"} width={"100%"} backgroundColor="#7b2cbf">
+            <Grid item height={"10%"} width={"100%"} sx={styles.gridStyleHead}>
               <Box sx={styles.boxOne} padding={4} aria-label="heading_name">
                 <Box sx={styles.logoBox} aria-label="initial_name">
                   <Typography sx={styles.logoName}>
@@ -101,7 +112,6 @@ const ViewResume = () => {
                 <Typography
                   variant="h4"
                   textAlign={"center"}
-                  color={"white"}
                   sx={styles.headFont}
                 >
                   {resumeData?.name}
@@ -116,7 +126,7 @@ const ViewResume = () => {
             >
               <Grid
                 item
-                flex={"0.6"}
+                flex={"0.7"}
                 height={"100dvh"}
                 sx={styles.resumeDataRight}
               >
@@ -162,7 +172,7 @@ const ViewResume = () => {
               </Grid>
               <Grid
                 item
-                flex={"0.4"}
+                flex={"0.3"}
                 height={"100dvh"}
                 sx={styles.fortyPercentStyles}
               >
@@ -178,6 +188,9 @@ const ViewResume = () => {
                           {resumeData?.email}
                         </Typography>
                       }
+                      onClick={() =>
+                        (window.location.href = `mailto:${resumeData?.email}`)
+                      }
                     />
                   </ListItem>
                   <ListItem sx={styles.listItemStyles}>
@@ -187,7 +200,12 @@ const ViewResume = () => {
                     <ListItemText
                       primary={
                         <Typography sx={styles.typoFontStyles}>
-                          {resumeData?.phone}
+                          <a
+                            href={`tel:${resumeData?.phone}`}
+                            style={{ color: "inherit", textDecoration: "none" }}
+                          >
+                            {resumeData?.phone}
+                          </a>
                         </Typography>
                       }
                     />
@@ -199,7 +217,14 @@ const ViewResume = () => {
                     <ListItemText
                       primary={
                         <Typography sx={styles.typoFontStyles}>
-                          {resumeData?.github}
+                          <a
+                            href={resumeData?.github}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ textDecoration: "none", color: "inherit" }}
+                          >
+                            {resumeData?.github}
+                          </a>
                         </Typography>
                       }
                     />
@@ -211,7 +236,14 @@ const ViewResume = () => {
                     <ListItemText
                       primary={
                         <Typography sx={styles.typoFontStyles}>
-                          {resumeData?.linkedIn}
+                          <a
+                            href={resumeData?.linkedIn}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ textDecoration: "none", color: "inherit" }}
+                          >
+                            {resumeData?.linkedIn}
+                          </a>
                         </Typography>
                       }
                     />
@@ -254,17 +286,6 @@ const ViewResume = () => {
           </Grid>
         </Grid>
       </Grid>
-      <Grid sx={styles.buttonGrid}>
-        <Button
-          variant="contained"
-          color="success"
-          onClick={downloadPDF}
-          disabled={!(loader === false)}
-          startIcon={<FileDownload />}
-        >
-          {loader ? <span>Downloading</span> : <span>Download</span>}
-        </Button>
-      </Grid>
     </Container>
   );
 };
@@ -277,9 +298,9 @@ const styles = {
     marginTop: "20px",
     borderRadius: "5px",
     height: {
-      xs: "282vh",
-      sm: "266vh",
-      md: "147vh",
+      xs: "350vh",
+      sm: "276vh",
+      md: "188vh",
       xl: "113vh",
     },
   },
@@ -294,10 +315,10 @@ const styles = {
   logoBox: {
     height: "50px",
     width: "50px",
-    borderBottom: "3px solid white",
-    borderTop: "3px solid white",
-    borderRight: "0.2px solid white",
-    borderLeft: "0.2px solid white",
+    borderBottom: "3px solid black",
+    borderTop: "3px solid black",
+    borderRight: "0.2px solid black",
+    borderLeft: "0.2px solid black",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -305,12 +326,9 @@ const styles = {
   },
   logoName: {
     fontWeight: "bolder",
-    color: "white",
     fontSize: "1.5rem",
-    fontFamily: "serif",
-    fontStyle: "italic",
   },
-  headFont: { fontSize: "2rem", fontFamily: "serif" },
+  headFont: { fontSize: "2rem" },
   resumeDataMain: {
     flexDirection: {
       xs: "column-reverse",
@@ -323,44 +341,42 @@ const styles = {
   fontHead: {
     color: "#383b3e",
     fontSize: "1.8rem",
-    fontFamily: "serif",
-    fontStyle: "italic",
   },
   fontHeadTwo: {
     color: "black",
     fontSize: "1.1rem",
-    fontFamily: "serif",
-    fontStyle: "italic",
   },
   dividerStyle: { width: "90%", margin: "2% 0 2% 2%" },
   componetStyles: {
     color: "black",
     fontSize: "1.3rem",
-    fontFamily: "serif",
-    fontStyle: "italic",
   },
   socialStyles: {
     marginTop: "10px",
-    fontFamily: "serif",
+
     marginLeft: "14px",
     fontWeight: "bolder",
   },
-  fortyPercentStyles: { backgroundColor: "#ddd0df" },
+  fortyPercentStyles: { backgroundColor: "#caf0f8" },
   listStyles: { padding: "2px 0" },
   listItemStyles: { padding: "4px 8px 4px 16px" },
-  listIconStyles: { minWidth: "35px" },
-  typoFontStyles: { fontFamily: "serif", fontSize: "18px" },
+  listIconStyles: { minWidth: "35px", cursor: "pointer" },
+  typoFontStyles: { fontSize: "18px", cursor: "pointer" },
   typoListStyles: {
-    fontFamily: "serif",
     marginLeft: "14px",
     fontWeight: "bolder",
+    cursor: "pointer",
   },
   dataFont: {
-    fontFamily: "serif",
     textTransform: "capitalize",
     marginLeft: "8px",
     fontSize: "18px",
   },
   radioIcon: { fontSize: "13px" },
-  buttonGrid: { display: "flex", justifyContent: "center", marginTop: "2%" },
+  buttonGrid: { display: "flex", justifyContent: "flex-end", marginTop: "2%" },
+  linkStyles: { textDecoration: "none", color: "inherit" },
+  gridStyleHead: {
+    border: "2px solid black",
+    boxShadow: "0 0 5px rgba(0,0,0,0.3",
+  },
 };

@@ -49,16 +49,13 @@ export default Educationdetails;
 const styles = {
   radioIcon: { fontSize: "10px" },
   institutionStyles: {
-    fontFamily: "serif",
     fontWeight: "bold",
     textTransform: "capitalize",
   },
   otherDataStyles: {
-    fontFamily: "serif",
     textTransform: "uppercase",
   },
   dateStyles: {
-    fontFamily: "serif",
     textTransform: "capitalize",
   },
 };

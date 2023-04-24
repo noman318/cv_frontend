@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 const Banner = () => {
   const navigate = useNavigate();
   return (
-    <Box sx={styles.mainBox}>
+    <Box sx={styles.mainBox} aria-label="main_banner">
       <Box aria-label="banner_content" sx={styles.boxContent}>
         <Typography variant="h4">My Cv the Resume Builder!</Typography>
         <Typography variant="h6" gutterBottom sx={{ marginTop: "15px" }}>
@@ -39,7 +39,7 @@ export default Banner;
 const styles = {
   mainBox: {
     marginTop: "5%",
-    backgroundColor: "#7b2cbf",
+    backgroundColor: "steelblue",
     height: { xs: "150dvh", sm: "150dvh", md: "75dvh", xl: "60dvh" },
     backgroundSize: "cover",
     backgroundPosition: "center",

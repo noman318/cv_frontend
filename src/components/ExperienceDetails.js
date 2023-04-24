@@ -45,16 +45,13 @@ export default ExperienceDetails;
 const styles = {
   radioIcon: { fontSize: "10px" },
   companyStyles: {
-    fontFamily: "serif",
     fontWeight: "bold",
     textTransform: "capitalize",
   },
   otherDataStyles: {
-    fontFamily: "serif",
     textTransform: "capitalize",
   },
   dateStyles: {
-    fontFamily: "serif",
     textTransform: "capitalize",
   },
 };

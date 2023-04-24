@@ -33,16 +33,30 @@ export const resumeSchema = Yup.object({
     })
   ),
   education: Yup.array().of(
-    Yup.object({
-      institution: Yup.string().min(0).max(255).required(),
-      fieldOfStudy: Yup.string().min(0).max(255).required(),
-      degree: Yup.string().min(0).max(255).required(),
-      percentage: Yup.number().required(),
-      startDate: Yup.date().required(),
-      endDate: Yup.date(),
-      description: Yup.string().min(0).max(1000),
+    Yup.object().shape({
+      institution: Yup.string()
+        .min(1, "Too Short!")
+        .max(255, "Too Long!")
+        .required("Required"),
+      fieldOfStudy: Yup.string()
+        .min(1, "Too Short!")
+        .max(255, "Too Long!")
+        .required("Required"),
+      degree: Yup.string()
+        .min(1, "Too Short!")
+        .max(255, "Too Long!")
+        .required("Required"),
+      percentage: Yup.number().required("Required"),
+      startDate: Yup.date().required("Required"),
+      endDate: Yup.date().when("startDate", (startDate, schema) => {
+        return startDate
+          ? schema.min(startDate, "End date can't be before start date")
+          : schema;
+      }),
+      description: Yup.string().max(1000, "Too Long!"),
     })
   ),
+
   skills: Yup.string()
     .matches(
       /^[\w\s,]+$/,
