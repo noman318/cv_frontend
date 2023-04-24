@@ -26,32 +26,14 @@ const ExperienceDetails = ({ data }) => {
   return (
     <Grid>
       <Stack direction={"row"} alignItems={"center"} spacing={1}>
-        <FiberManualRecord sx={{ fontSize: "10px" }} />
-        <Typography
-          sx={{
-            fontFamily: "serif",
-            fontWeight: "bold",
-            textTransform: "capitalize",
-          }}
-        >
+        <FiberManualRecord sx={styles.radioIcon} />
+        <Typography sx={styles.companyStyles}>
           {data?.company} - {data?.position}
         </Typography>
       </Stack>
       <Grid item aria-label="other_experienceData" marginLeft={"20px"}>
-        <Typography
-          sx={{
-            fontFamily: "serif",
-            textTransform: "capitalize",
-          }}
-        >
-          {data?.location}
-        </Typography>
-        <Typography
-          sx={{
-            fontFamily: "serif",
-            textTransform: "capitalize",
-          }}
-        >
+        <Typography sx={styles.otherDataStyles}>{data?.location}</Typography>
+        <Typography sx={styles.otherDataStyles}>
           {formattedDateRange}
         </Typography>
       </Grid>
@@ -60,3 +42,19 @@ const ExperienceDetails = ({ data }) => {
 };
 
 export default ExperienceDetails;
+const styles = {
+  radioIcon: { fontSize: "10px" },
+  companyStyles: {
+    fontFamily: "serif",
+    fontWeight: "bold",
+    textTransform: "capitalize",
+  },
+  otherDataStyles: {
+    fontFamily: "serif",
+    textTransform: "capitalize",
+  },
+  dateStyles: {
+    fontFamily: "serif",
+    textTransform: "capitalize",
+  },
+};

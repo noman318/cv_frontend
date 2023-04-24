@@ -62,21 +62,14 @@ function Navbar() {
         <Toolbar
           disableGutters
           aria-label="navbar_tools"
-          sx={{ display: "flex", justifyContent: "space-between" }}
+          sx={styles.toolbarStyles}
         >
           <Typography
             variant="h6"
             noWrap
             component="a"
             href="/"
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
+            sx={styles.myLogo}
           >
             myCV
           </Typography>
@@ -86,23 +79,14 @@ function Navbar() {
             noWrap
             component="a"
             href=""
-            sx={{
-              mr: 2,
-              display: { xs: "flex", md: "none" },
-              flexGrow: 1,
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
+            sx={styles.myLogoResponsive}
           >
             myCV
           </Typography>
-          <Box sx={{ flexGrow: 0 }}>
+          <Box sx={styles.boxStyles}>
             <Tooltip>
               {getUserInfo ? (
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <IconButton onClick={handleOpenUserMenu} sx={styles.iconButton}>
                   <>
                     {userloggedIn ? (
                       <Avatar alt="User Avatar" src={`none`} />
@@ -115,37 +99,7 @@ function Navbar() {
                   </>
                 </IconButton>
               ) : (
-                <Box
-                  aria-label="auth_ButtonGroup"
-                  sx={{ display: { xs: "flex", md: "block" } }}
-                >
-                  {/* <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <>
-                      {userloggedIn ? (
-                        <Avatar alt="User Avatar" src={`userAvatar`} />
-                      ) : (
-                        <Avatar
-                          alt="Default Avatar"
-                          src={"/static/images/avatar/2.jpg"}
-                        />
-                      )}
-                    </>
-                  </IconButton> */}
-                  {/* {loginReg.map((authData) => (
-                    <ButtonGroup key={authData}>
-                      <Button
-                        variant="contained"
-                        textAlign="center"
-                        aria-label="reg_login button"
-                        sx={{
-                          marginRight: "10px",
-                          height: { xs: "35px", sm: "40px" },
-                        }}
-                      >
-                        {authData}
-                      </Button>
-                    </ButtonGroup>
-                  ))} */}
+                <Box aria-label="auth_ButtonGroup" sx={styles.boxResponsive}>
                   <Box
                     sx={{ flexGrow: 1, display: { xs: "flex", md: "flex" } }}
                   >
@@ -222,3 +176,28 @@ function Navbar() {
   );
 }
 export default Navbar;
+
+const styles = {
+  myLogo: {
+    mr: 2,
+    display: { xs: "none", md: "flex" },
+    fontWeight: 700,
+    letterSpacing: ".3rem",
+    color: "inherit",
+    textDecoration: "none",
+  },
+  myLogoResponsive: {
+    mr: 2,
+    display: { xs: "flex", md: "none" },
+    flexGrow: 1,
+    fontFamily: "monospace",
+    fontWeight: 700,
+    letterSpacing: ".3rem",
+    color: "inherit",
+    textDecoration: "none",
+  },
+  toolbarStyles: { display: "flex", justifyContent: "space-between" },
+  boxStyles: { flexGrow: 0 },
+  iconButton: { p: 0 },
+  boxResponsive: { display: { xs: "flex", md: "block" } },
+};

@@ -23,53 +23,42 @@ const Educationdetails = ({ data }) => {
   return (
     <Grid>
       <Stack direction={"row"} alignItems={"center"} spacing={1}>
-        <FiberManualRecordOutlined sx={{ fontSize: "10px" }} />
-        <Typography
-          sx={{
-            fontFamily: "serif",
-            fontWeight: "bold",
-            textTransform: "capitalize",
-          }}
-        >
+        <FiberManualRecordOutlined sx={styles.radioIcon} />
+        <Typography sx={styles.institutionStyles}>
           institution : {data?.institution}
         </Typography>
       </Stack>
       <Grid item aria-label="other_educationData" marginLeft={"20px"}>
-        <Typography
-          sx={{
-            fontFamily: "serif",
-            textTransform: "uppercase",
-          }}
-        >
+        <Typography sx={styles.otherDataStyles}>
           degree : {data?.degree}
         </Typography>
-        <Typography
-          sx={{
-            fontFamily: "serif",
-            textTransform: "uppercase",
-          }}
-        >
+        <Typography sx={styles.otherDataStyles}>
           Field of study : {data?.fieldOfStudy}
         </Typography>
-        <Typography
-          sx={{
-            fontFamily: "serif",
-            textTransform: "uppercase",
-          }}
-        >
+        <Typography sx={styles.otherDataStyles}>
           Percentage : {data?.percentage}
         </Typography>
-        <Typography
-          sx={{
-            fontFamily: "serif",
-            textTransform: "capitalize",
-          }}
-        >
-          {formattedDateRange}
-        </Typography>
+        <Typography sx={styles.dateStyles}>{formattedDateRange}</Typography>
       </Grid>
     </Grid>
   );
 };
 
 export default Educationdetails;
+
+const styles = {
+  radioIcon: { fontSize: "10px" },
+  institutionStyles: {
+    fontFamily: "serif",
+    fontWeight: "bold",
+    textTransform: "capitalize",
+  },
+  otherDataStyles: {
+    fontFamily: "serif",
+    textTransform: "uppercase",
+  },
+  dateStyles: {
+    fontFamily: "serif",
+    textTransform: "capitalize",
+  },
+};
