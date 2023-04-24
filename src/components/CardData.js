@@ -35,42 +35,12 @@ export default function CardData() {
     navigate("/add-resume");
   };
   return (
-    <Grid
-      sx={{
-        display: "flex",
-        flexDirection: { xs: "column", sm: "column", md: "row" },
-      }}
-    >
-      <Card
-        sx={{
-          maxWidth: 330,
-          margin: "5%",
-          display: "flex",
-          flexDirection: "column",
-        }}
-        aria-label="card_main"
-      >
-        <CardActionArea
-          onClick={handleNewResume}
-          sx={{ backgroundColor: "#9d4edd" }}
-        >
-          <AddIcon
-            sx={{
-              color: "black",
-              width: "100%",
-              fontSize: "12rem",
-              // fontWeight: "bold",
-              backgroundColor: "#c77dff",
-            }}
-          />
+    <Grid sx={styles.mainGrid}>
+      <Card sx={styles.addCardStyle} aria-label="card_main">
+        <CardActionArea onClick={handleNewResume} sx={styles.addCardBg}>
+          <AddIcon sx={styles.addIcon} />
         </CardActionArea>
-        <CardActions
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            padding: 1,
-          }}
-        >
+        <CardActions sx={styles.cardAction}>
           <Typography
             gutterBottom
             variant="button"
@@ -84,27 +54,13 @@ export default function CardData() {
           </Typography>
         </CardActions>
       </Card>
-      <Stack
-        aria-label="new_data"
-        sx={{
-          display: "flex",
-          flexDirection: { xs: "column", sm: "column", md: "row" },
-          margin: "10px",
-          padding: "10px",
-        }}
-      >
+      <Stack aria-label="new_data" sx={styles.stackStyles}>
         {allResume.map((data) => (
           <Card
             aria-label="card_map"
             key={data?.id}
-            margin="30px"
-            sx={{
-              maxWidth: 345,
-              padding: "10px",
-              width: "100%",
-              height: { xs: "20%", sm: "20%", md: "80%" },
-              margin: "30px",
-            }}
+            // margin="30px"
+            sx={styles.allCardStyles}
           >
             <Typography
               fontSize={"1rem"}
@@ -126,7 +82,7 @@ export default function CardData() {
             </CardContent>
             <CardActions
               aria-label="icon_buttons_cards"
-              sx={{ display: "flex", justifyContent: "center" }}
+              sx={styles.allActionCard}
             >
               <>
                 <Stack aria-label="icon_buttons" direction="row" spacing={1}>
@@ -134,16 +90,14 @@ export default function CardData() {
                     <Grid item>
                       <IconButton aria-label="view">
                         <Link to={`/view/${data?._id}`}>
-                          <Visibility
-                            sx={{ fontSize: "2rem", color: "purple" }}
-                          />
+                          <Visibility sx={styles.resumeActionIcon} />
                         </Link>
                       </IconButton>
                     </Grid>
                     <Grid item>
                       <IconButton aria-label="edit">
                         <Link to={`/edit/${data?._id}`}>
-                          <Edit sx={{ fontSize: "2rem", color: "#bd3fbd" }} />
+                          <Edit sx={styles.resumeActionIcon} />
                         </Link>
                       </IconButton>
                     </Grid>
@@ -159,8 +113,6 @@ export default function CardData() {
                   </Grid>
                 </Stack>
               </>
-              {/* <Button size="small">Share</Button>
-              <Button size="small">Learn More</Button> */}
             </CardActions>
           </Card>
         ))}
@@ -168,3 +120,43 @@ export default function CardData() {
     </Grid>
   );
 }
+const styles = {
+  mainGrid: {
+    display: "flex",
+    flexDirection: { xs: "column", sm: "column", md: "row" },
+  },
+  addCardStyle: {
+    maxWidth: 330,
+    margin: "5%",
+    display: "flex",
+    flexDirection: "column",
+  },
+  addCardBg: { backgroundColor: "#9d4edd" },
+  addIcon: {
+    color: "black",
+    width: "100%",
+    fontSize: "12rem",
+    // fontWeight: "bold",
+    backgroundColor: "#c77dff",
+  },
+  cardAction: {
+    display: "flex",
+    flexDirection: "column",
+    padding: 1,
+  },
+  stackStyles: {
+    display: "flex",
+    flexDirection: { xs: "column", sm: "column", md: "row" },
+    margin: "10px",
+    padding: "10px",
+  },
+  allCardStyles: {
+    maxWidth: 345,
+    padding: "10px",
+    width: "100%",
+    height: { xs: "20%", sm: "20%", md: "80%" },
+    margin: "25px 0 0 0",
+  },
+  allActionCard: { display: "flex", justifyContent: "center" },
+  resumeActionIcon: { fontSize: "2rem", color: "purple" },
+};

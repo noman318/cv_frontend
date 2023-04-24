@@ -197,7 +197,12 @@ export default function CreateResumeScreen() {
   };
 
   return (
-    <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+    <Box
+      component="form"
+      noValidate
+      onSubmit={handleSubmit}
+      sx={styles.mainForm}
+    >
       <Container>
         <Typography variant="h5" gutterBottom>
           Create New Resume
@@ -220,7 +225,7 @@ export default function CreateResumeScreen() {
               autoFocus
             />
             {errors.firstName && touched.firstName ? (
-              <Typography variant="caption" sx={{ color: "red" }}>
+              <Typography variant="caption" sx={styles.error}>
                 {errors.firstName}
               </Typography>
             ) : (
@@ -243,7 +248,7 @@ export default function CreateResumeScreen() {
               onBlur={handleBlur}
             />
             {errors.lastName && touched.lastName ? (
-              <Typography variant="caption" sx={{ color: "red" }}>
+              <Typography variant="caption" sx={styles.error}>
                 {errors.lastName}
               </Typography>
             ) : (
@@ -267,7 +272,7 @@ export default function CreateResumeScreen() {
               onBlur={handleBlur}
             />
             {errors.email && touched.email ? (
-              <Typography variant="caption" sx={{ color: "red" }}>
+              <Typography variant="caption" sx={styles.error}>
                 {errors.email}
               </Typography>
             ) : (
@@ -290,7 +295,7 @@ export default function CreateResumeScreen() {
               onBlur={handleBlur}
             />
             {errors.phone && touched.phone ? (
-              <Typography variant="caption" sx={{ color: "red" }}>
+              <Typography variant="caption" sx={styles.error}>
                 {errors.phone}
               </Typography>
             ) : (
@@ -312,7 +317,7 @@ export default function CreateResumeScreen() {
               onBlur={handleBlur}
             />
             {errors.github && touched.github ? (
-              <Typography variant="caption" sx={{ color: "red" }}>
+              <Typography variant="caption" sx={styles.error}>
                 {errors.github}
               </Typography>
             ) : (
@@ -333,7 +338,7 @@ export default function CreateResumeScreen() {
               onChange={handleChange}
             />
             {errors.linkedIn && touched.linkedIn ? (
-              <Typography variant="caption" sx={{ color: "red" }}>
+              <Typography variant="caption" sx={styles.error}>
                 {errors.linkedIn}
               </Typography>
             ) : (
@@ -355,7 +360,7 @@ export default function CreateResumeScreen() {
               onChange={handleChange}
             />
             {errors.skype && touched.skype ? (
-              <Typography variant="caption" sx={{ color: "red" }}>
+              <Typography variant="caption" sx={styles.error}>
                 {errors.skype}
               </Typography>
             ) : (
@@ -376,7 +381,7 @@ export default function CreateResumeScreen() {
               onChange={handleChange}
             />
             {errors.twitter && touched.twitter ? (
-              <Typography variant="caption" sx={{ color: "red" }}>
+              <Typography variant="caption" sx={styles.error}>
                 {errors.twitter}
               </Typography>
             ) : (
@@ -401,7 +406,7 @@ export default function CreateResumeScreen() {
               rows={2}
             />
             {errors.skills && touched.skills ? (
-              <Typography variant="caption" sx={{ color: "red" }}>
+              <Typography variant="caption" sx={styles.error}>
                 {errors.skills}
               </Typography>
             ) : (
@@ -426,7 +431,7 @@ export default function CreateResumeScreen() {
               rows={2}
             />
             {errors.hobbies && touched.hobbies ? (
-              <Typography variant="caption" sx={{ color: "red" }}>
+              <Typography variant="caption" sx={styles.error}>
                 {errors.hobbies}
               </Typography>
             ) : (
@@ -450,7 +455,7 @@ export default function CreateResumeScreen() {
               rows={2}
             />
             {errors.address && touched.address ? (
-              <Typography variant="caption" sx={{ color: "red" }}>
+              <Typography variant="caption" sx={styles.error}>
                 {errors.address}
               </Typography>
             ) : (
@@ -475,9 +480,7 @@ export default function CreateResumeScreen() {
               rows={2}
             />
           </Grid>
-          <Divider
-            sx={{ height: "4rem", width: "100%", backgroundColor: "#black" }}
-          />
+          <Divider sx={styles.dividerStyles} />
 
           <Typography variant="h6" gutterBottom>
             Education Details
@@ -486,7 +489,7 @@ export default function CreateResumeScreen() {
           <Button
             variant="outlined"
             onClick={onAddEducation}
-            sx={{ marginLeft: "10px", marginTop: "10px" }}
+            sx={styles.buttonStyles}
           >
             Add Education
           </Button>
@@ -498,7 +501,7 @@ export default function CreateResumeScreen() {
                   variant="outlined"
                   color="secondary"
                   onClick={() => onDeleteEduBox(index)}
-                  sx={{ marginLeft: "10px", marginTop: "10px" }}
+                  sx={styles.buttonStyles}
                 >
                   Delete
                 </Button>
@@ -516,7 +519,7 @@ export default function CreateResumeScreen() {
                     onChange={(event) => handleInputChange(index, event)}
                   />
                   {errors.institution && touched.institution ? (
-                    <Typography variant="caption" sx={{ color: "red" }}>
+                    <Typography variant="caption" sx={styles.error}>
                       {errors.institution}
                     </Typography>
                   ) : (
@@ -539,7 +542,7 @@ export default function CreateResumeScreen() {
                     helperTex={touched.degree && errors.degree}
                   />
                   {/* {errors.degree && touched.degree ? (
-                    <Typography variant="caption" sx={{ color: "red" }}>
+                    <Typography variant="caption" sx={styles.error}>
                       {errors.degree}
                     </Typography>
                   ) : (
@@ -560,7 +563,7 @@ export default function CreateResumeScreen() {
                     onChange={(event) => handleInputChange(index, event)}
                   />
                   {errors.percentage && touched.percentage ? (
-                    <Typography variant="caption" sx={{ color: "red" }}>
+                    <Typography variant="caption" sx={styles.error}>
                       {errors.percentage}
                     </Typography>
                   ) : (
@@ -581,7 +584,7 @@ export default function CreateResumeScreen() {
                     onChange={(event) => handleInputChange(index, event)}
                   />
                   {errors.fieldOfStudy && touched.fieldOfStudy ? (
-                    <Typography variant="caption" sx={{ color: "red" }}>
+                    <Typography variant="caption" sx={styles.error}>
                       {errors.fieldOfStudy}
                     </Typography>
                   ) : (
@@ -602,7 +605,7 @@ export default function CreateResumeScreen() {
                     onChange={(event) => handleInputChange(index, event)}
                   />
                   {errors.startDate && touched.startDate ? (
-                    <Typography variant="caption" sx={{ color: "red" }}>
+                    <Typography variant="caption" sx={styles.error}>
                       {errors.startDate}
                     </Typography>
                   ) : (
@@ -623,7 +626,7 @@ export default function CreateResumeScreen() {
                     onChange={(event) => handleInputChange(index, event)}
                   />
                   {errors.endDate && touched.endDate ? (
-                    <Typography variant="caption" sx={{ color: "red" }}>
+                    <Typography variant="caption" sx={styles.error}>
                       {errors.endDate}
                     </Typography>
                   ) : (
@@ -646,7 +649,7 @@ export default function CreateResumeScreen() {
           <Button
             variant="outlined"
             onClick={onAddExperience}
-            sx={{ marginLeft: "10px", marginTop: "10px" }}
+            sx={styles.buttonStyles}
           >
             Add Expereince
           </Button>
@@ -658,7 +661,7 @@ export default function CreateResumeScreen() {
                   variant="outlined"
                   color="secondary"
                   onClick={() => onDeleteExpBox(index)}
-                  sx={{ marginLeft: "10px", marginTop: "10px" }}
+                  sx={styles.buttonStyles}
                 >
                   Delete
                 </Button>
@@ -675,7 +678,7 @@ export default function CreateResumeScreen() {
                     onChange={(event) => handleInputChangeExp(index, event)}
                   />
                   {errors.company && touched.company ? (
-                    <Typography variant="caption" sx={{ color: "red" }}>
+                    <Typography variant="caption" sx={styles.error}>
                       {errors.company}
                     </Typography>
                   ) : (
@@ -695,7 +698,7 @@ export default function CreateResumeScreen() {
                     onChange={(event) => handleInputChangeExp(index, event)}
                   />
                   {errors.location && touched.location ? (
-                    <Typography variant="caption" sx={{ color: "red" }}>
+                    <Typography variant="caption" sx={styles.error}>
                       {errors.location}
                     </Typography>
                   ) : (
@@ -715,7 +718,7 @@ export default function CreateResumeScreen() {
                     onChange={(event) => handleInputChangeExp(index, event)}
                   />
                   {errors.position && touched.position ? (
-                    <Typography variant="caption" sx={{ color: "red" }}>
+                    <Typography variant="caption" sx={styles.error}>
                       {errors.position}
                     </Typography>
                   ) : (
@@ -735,7 +738,7 @@ export default function CreateResumeScreen() {
                     onChange={(event) => handleInputChangeExp(index, event)}
                   />
                   {errors.startDate && touched.startDate ? (
-                    <Typography variant="caption" sx={{ color: "red" }}>
+                    <Typography variant="caption" sx={styles.error}>
                       {errors.startDate}
                     </Typography>
                   ) : (
@@ -755,7 +758,7 @@ export default function CreateResumeScreen() {
                     onChange={(event) => handleInputChangeExp(index, event)}
                   />
                   {errors.endDate && touched.endDate ? (
-                    <Typography variant="caption" sx={{ color: "red" }}>
+                    <Typography variant="caption" sx={styles.error}>
                       {errors.endDate}
                     </Typography>
                   ) : (
@@ -770,7 +773,7 @@ export default function CreateResumeScreen() {
           type="submit"
           fullWidth
           variant="contained"
-          sx={{ mt: 3, mb: 2 }}
+          sx={styles.actionButton}
           color="secondary"
         >
           Create Resume
@@ -779,3 +782,10 @@ export default function CreateResumeScreen() {
     </Box>
   );
 }
+const styles = {
+  mainForm: { mt: 3 },
+  dividerStyles: { height: "4rem", width: "100%", backgroundColor: "#black" },
+  buttonStyles: { marginLeft: "10px", marginTop: "10px" },
+  actionButton: { mt: 3, mb: 2 },
+  error: { color: "red" },
+};
