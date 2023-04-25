@@ -9,38 +9,32 @@ const postRegister = (data) => {
 const postLogin = (data) => {
   return axios.post(`${apiUrl}login`, data);
 };
+const getHeaders = (token) => ({
+  headers: {
+    token: `${token}`,
+  },
+});
 
 const getAllResume = (id, token) => {
-  return axios.get(`${apiUrl}resume/getall-resume/${id}`, {
-    headers: {
-      token: `${token}`,
-    },
-  });
+  return axios.get(`${apiUrl}resume/getall-resume/${id}`, getHeaders(token));
 };
 
 const getResumeById = (id, token) => {
-  return axios.get(`${apiUrl}resume/get-resume/${id}`, {
-    headers: {
-      token: `${token}`,
-    },
-  });
+  return axios.get(`${apiUrl}resume/get-resume/${id}`, getHeaders(token));
 };
 
 const createNewResume = (token, data) => {
-  return axios.post(`${apiUrl}resume/create-resume`, data, {
-    headers: {
-      token: `${token}`,
-    },
-  });
+  return axios.post(`${apiUrl}resume/create-resume`, data, getHeaders(token));
 };
 
 const editResume = (token, id, data) => {
-  return axios.put(`${apiUrl}resume/update-resume/${id}`, data, {
-    headers: {
-      token: `${token}`,
-    },
-  });
+  return axios.put(
+    `${apiUrl}resume/update-resume/${id}`,
+    data,
+    getHeaders(token)
+  );
 };
+
 const getUser = () => {
   try {
     return jwt_decode(localStorage.getItem("_token"));

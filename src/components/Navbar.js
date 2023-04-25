@@ -69,20 +69,10 @@ function Navbar() {
             component="img"
             src={logoPng}
             variant="h6"
-            noWrap
             sx={styles.myLogo}
             alt="My Logo"
             onClick={() => navigate("/")}
           />
-
-          {/* <Box
-            component="img"
-            src={logoPng}
-            variant="h6"
-            noWrap
-            sx={styles.myLogo}
-            alt="My Logo"
-          /> */}
           <Box sx={styles.boxStyles}>
             <Tooltip>
               {getUserInfo ? (
